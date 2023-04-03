@@ -1,10 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-// import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ChakraProvider } from '@chakra-ui/react'
 import theme from 'assets/theme';
+import { QueryClientProvider, QueryClient } from 'react-query';
+import { BrowserRouter } from 'react-router-dom';
+import './i18n'
+import { WeatherContextProvider } from 'context/WeatherContext';
+
+const queryClient = new QueryClient()
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -12,7 +17,13 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
-      <App />
+      <QueryClientProvider client={queryClient}>
+        <WeatherContextProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </WeatherContextProvider>
+      </QueryClientProvider>
     </ChakraProvider>
   </React.StrictMode>
 );
