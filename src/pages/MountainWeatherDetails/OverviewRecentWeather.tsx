@@ -1,7 +1,10 @@
 import { Box, Flex, Grid, GridItem, Image, Text, Divider } from "@chakra-ui/react";
+import { TemperatureContext } from "context/TemperatureContext";
+import { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { getDateInfo } from "utils/getDate";
 import { getWxName, getPoP6hrOfTheDay } from "utils/getWeather";
+import { convertCelsiusToFahrenheit } from 'utils/unitCalculate'
 
 type TimeType = 'today' | 'tomorrow'
 
@@ -14,6 +17,7 @@ const RecentWeatherBlock = ({
   weekWeatherData: any[],
   PoP: string[][]
 }) => {
+  const { isCelsius } = useContext(TemperatureContext)
   const { t } = useTranslation()
   const { month, date, day } = time === 'today' ? getDateInfo() : getDateInfo(undefined, 1)
   const weather = time === 'today' ? weekWeatherData[12].time[0].elementValue[0].value : weekWeatherData[12].time[1].elementValue[0].value
@@ -41,13 +45,25 @@ const RecentWeatherBlock = ({
           <Box bg="#ed4350" w={110} borderRadius={10} textAlign="center" borderWidth={2} borderColor="#ed4350">
             <Text as="b" color="white">最高</Text>
             <Box bg="white" color="#ed4350" borderBottomRadius={8}>
-              <Text as="b">{maxTemp}℃</Text>
+              <Text as="b">
+                {isCelsius 
+                  ? maxTemp 
+                  : convertCelsiusToFahrenheit(maxTemp)
+                }
+                {isCelsius ? "°C" : "°F"}
+              </Text>
             </Box>
           </Box>
           <Box bg="#1477d0" w={110} borderRadius={10} textAlign="center" borderWidth={2} borderColor="#1477d0">
             <Text as="b" color="white">最低</Text>
             <Box bg="white" color="#1477d0" borderBottomRadius={8}>
-              <Text as="b">{minTemp}℃</Text>
+              <Text as="b">
+                {isCelsius 
+                  ? minTemp 
+                  : convertCelsiusToFahrenheit(minTemp)
+                }
+                {isCelsius ? "°C" : "°F"}
+              </Text>
             </Box>
           </Box>
         </Flex>

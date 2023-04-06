@@ -1,13 +1,15 @@
 import { Route, Routes } from 'react-router-dom';
-import MountainWeatherDetails from './pages/MountainWeatherDetails'
+import Layouts from 'components/Layouts';
 import Home from 'pages/Home';
+import MountainWeatherDetails from './pages/MountainWeatherDetails'
 
 function App() {
   return (
     <div className="App">
+      <Layouts />
       <Routes>
-        <Route path='/' element={<Home />}></Route>
-        <Route path='/:mountainId' element={<MountainWeatherDetails />}></Route>
+        <Route path='/' element={<Home />} />
+        <Route path='/:mountainId' element={<MountainWeatherDetails />} />
       </Routes>
     </div>
   );

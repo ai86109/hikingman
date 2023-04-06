@@ -1,11 +1,13 @@
 import { Image, TableContainer, Table, Thead, Tr, Th, Tbody, Td } from "@chakra-ui/react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getWeekWeatherDetail } from "utils/getWeather";
+import { convertCelsiusToFahrenheit } from 'utils/unitCalculate'
 import { weekWeatherDataType } from "types/WeatherDataType"
 import { TFunction } from "i18next";
 import SelectButtons from "components/SelectButtons";
 import { weekTabs } from "data/constant";
+import { TemperatureContext } from "context/TemperatureContext";
 
 const TableBlock = ({ 
   data, 
@@ -16,6 +18,7 @@ const TableBlock = ({
   t: TFunction,
   table: string
 }) => {
+  const { isCelsius } = useContext(TemperatureContext)
   return (
     <TableContainer bg="white" borderRadius={10}>
       <Table variant='simple' bg="gray.200">
@@ -25,11 +28,11 @@ const TableBlock = ({
             {table === "table1" && (
             <>
               <Th textAlign={"center"}>天気 / 降水確率</Th>
-              <Th textAlign={"center"}>気温</Th>
+              <Th textAlign={"center"}>気温({isCelsius ? "°C" : "°F"})</Th>
             </>)}
             {table === "table2" && (
             <>
-              <Th textAlign={"center"}>體感溫度</Th>
+              <Th textAlign={"center"}>體感溫度({isCelsius ? "°C" : "°F"})</Th>
               <Th textAlign={"center"}>濕度</Th>
               <Th textAlign={"center"}>風</Th>
             </>)}
@@ -52,7 +55,16 @@ const TableBlock = ({
                   {/* Wx 用 tooltip 表示 */}
                   <div>{datum.PoP || "--"}%</div>
                 </Td>
-                <Td textAlign="center" bg="white">{datum.maxTemp} / {datum.minTemp}</Td>
+                <Td textAlign="center" bg="white">
+                  {isCelsius 
+                    ? datum.maxTemp 
+                    : convertCelsiusToFahrenheit(Number(datum.maxTemp))
+                  } / 
+                  {isCelsius 
+                    ? datum.minTemp : 
+                    convertCelsiusToFahrenheit(Number(datum.minTemp))
+                  }
+                </Td>
               </Tr>
             ))
           }
@@ -61,7 +73,16 @@ const TableBlock = ({
             data.map((datum) => (
               <Tr key={`${table}-${datum.date.day}`}>
                 <Td>{datum.date.month}/{datum.date.date} ({t(`time.daysOfTheWeek.${datum.date.day}`)})</Td>
-                <Td textAlign="center" bg="white">{datum.maxBodyTemp} / {datum.minBodyTemp}</Td>
+                <Td textAlign="center" bg="white">
+                  {isCelsius 
+                    ? datum.maxBodyTemp 
+                    : convertCelsiusToFahrenheit(Number(datum.maxBodyTemp))
+                  } / 
+                  {isCelsius 
+                    ? datum.minBodyTemp 
+                    : convertCelsiusToFahrenheit(Number(datum.minBodyTemp))
+                  }
+                </Td>
                 <Td textAlign="center" bg="white">{datum.humidity}</Td>
                 {/* wind direction image */}
                 <Td textAlign="center" bg="white">{datum.wind.direction} / {datum.wind.speed}</Td>

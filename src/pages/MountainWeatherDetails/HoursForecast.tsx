@@ -1,11 +1,13 @@
 import { Box, Image, TableContainer, Table, Thead, Tr, Th, Tbody, Td } from "@chakra-ui/react";
 import SelectButtons from "components/SelectButtons";
-import { Fragment, useState } from "react";
+import { Fragment, useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getHourWeatherDetail } from "utils/getWeather";
+import { convertCelsiusToFahrenheit } from 'utils/unitCalculate'
 import { TFunction } from "i18next";
 import { hourWeatherListType } from "types/WeatherDataType"
 import { hourTabs } from "data/constant";
+import { TemperatureContext } from "context/TemperatureContext";
 
 const TableBlock = ({ 
   data, 
@@ -16,6 +18,7 @@ const TableBlock = ({
   t: TFunction,
   table: string
 }) => {
+  const { isCelsius } = useContext(TemperatureContext)
   // console.log("data", data)
   return (
     <>
@@ -33,7 +36,7 @@ const TableBlock = ({
                     {table === "table1" && (
                       <>
                         <Th textAlign={"center"}>天気 / 降水確率</Th>
-                        <Th textAlign={"center"}>気温</Th>
+                        <Th textAlign={"center"}>気温({isCelsius ? "°C" : "°F"})</Th>
                       </>)}
                     {table === "table2" && (
                     <>
@@ -42,7 +45,7 @@ const TableBlock = ({
                     </>)}
                     {table === "table3" && (
                     <>
-                      <Th textAlign={"center"}>體感溫度</Th>
+                      <Th textAlign={"center"}>體感溫度({isCelsius ? "°C" : "°F"})</Th>
                       <Th textAlign={"center"}>舒適度</Th>
                     </>)}
                   </Tr>
@@ -59,7 +62,12 @@ const TableBlock = ({
                           {/* Wx 用 tooltip 表示 */}
                           <div>{datum.PoP || "--"}%</div>
                         </Td>
-                        <Td>{datum.temp}</Td>
+                        <Td>
+                          {isCelsius 
+                            ? datum.temp 
+                            : convertCelsiusToFahrenheit(Number(datum.temp))
+                          }
+                        </Td>
                       </Tr>
                     ))
                   }
@@ -79,7 +87,12 @@ const TableBlock = ({
                     weatherData.map((datum) => (
                       <Tr key={`${table}-${datum.time}`}>
                         <Td>{datum.time}點</Td>
-                        <Td textAlign="center" bg="white">{datum.bodyTemp}</Td>
+                        <Td textAlign="center" bg="white">
+                          {isCelsius 
+                            ? datum.bodyTemp 
+                            : convertCelsiusToFahrenheit(Number(datum.bodyTemp))
+                          }
+                        </Td>
                         <Td textAlign="center" bg="white">{datum.comfortIdx}</Td>
                       </Tr>
                     ))

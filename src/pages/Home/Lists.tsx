@@ -1,20 +1,29 @@
 import { Card, CardBody, CardFooter, Stack, Heading, Button, Flex } from '@chakra-ui/react'
+import { TemperatureContext } from 'context/TemperatureContext'
+import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { WeatherMapType, WeatherDataType } from 'types/WeatherDataType'
 import { getWxName } from 'utils/getWeather'
+import { convertCelsiusToFahrenheit } from 'utils/unitCalculate'
+import { getSearchedList } from 'utils/search'
 
 export default function Lists({ 
-  data 
+  data,
+  inputVal
 }: {
-  data: WeatherMapType
+  data: WeatherMapType,
+  inputVal: string
 } ) {
+  const { isCelsius } = useContext(TemperatureContext)
   const { t } = useTranslation()
+  const list = getSearchedList(Array.from(data.values()), inputVal, t)
+  // console.log("list", list)
 
   return (
     <>
-      {data.size > 0 &&
-        Array.from(data.values()).map((mountain: WeatherDataType) => (
+      {list.length > 0 &&
+        list.map((mountain: WeatherDataType) => (
           <Card
             key={mountain.basicInfo.id}
             direction={{ base: 'row' }}
@@ -27,7 +36,13 @@ export default function Lists({
               <CardBody>
                 <Flex>
                   <div>{t(`Wx.${getWxName(mountain.hourWeatherData[9].time[0].elementValue[0].value)}`)}</div>，
-                  <div>{mountain.hourWeatherData[0].time[0].elementValue.value}</div>度
+                  <div>
+                    {isCelsius 
+                      ? mountain.hourWeatherData[0].time[0].elementValue.value 
+                      : convertCelsiusToFahrenheit(mountain.hourWeatherData[0].time[0].elementValue.value)
+                    }
+                    {isCelsius ? "°C" : "°F"}
+                  </div>
                 </Flex>
               </CardBody>
               <CardFooter>

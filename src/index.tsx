@@ -8,6 +8,7 @@ import { QueryClientProvider, QueryClient } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 import './i18n'
 import { WeatherContextProvider } from 'context/WeatherContext';
+import { TemperatureContextProvider } from 'context/TemperatureContext';
 
 const queryClient = new QueryClient()
 
@@ -19,9 +20,11 @@ root.render(
     <ChakraProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
         <WeatherContextProvider>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
+          <TemperatureContextProvider>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </TemperatureContextProvider>
         </WeatherContextProvider>
       </QueryClientProvider>
     </ChakraProvider>
