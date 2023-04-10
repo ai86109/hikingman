@@ -11,7 +11,7 @@ export default function Home() {
 
   return (
     <div>
-      <Search inputVal={inputVal} handleChange={handleChange} />
+      <Search placeholder={'輸入想查詢的山'} inputVal={inputVal} handleChange={handleChange} />
       <Lists data={weatherMap} inputVal={inputVal} />
     </div>
   )
