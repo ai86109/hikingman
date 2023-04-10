@@ -1,10 +1,12 @@
 import { createContext, ReactNode } from "react";
 import { useQuery } from 'react-query'
 import { getWeekWeather, getHourWeather, getWeekWeatherTW, getHourWeatherTW, getSunrise } from 'utils/fetchers/getWeather'
-import { WeatherMapType, BasicInfoType } from "types/WeatherDataType";
+import { WeatherMapType, BasicInfoType, sunriseListType, sunriseAndSunsetType } from "types/WeatherDataType";
+import { twCounty } from "data/constant";
 
 interface WeatherContextProps {
-  weatherMap: WeatherMapType
+  weatherMap: WeatherMapType,
+  sunriseAndSunset: sunriseAndSunsetType
 }
 
 interface WeatherContextProviderProps {
@@ -12,21 +14,21 @@ interface WeatherContextProviderProps {
 }
 
 const WeatherContext = createContext<WeatherContextProps>({
-  weatherMap: new Map()
+  weatherMap: new Map(),
+  sunriseAndSunset: {}
 })
 
 const WeatherContextProvider = ({ children }: WeatherContextProviderProps) => {
   const { data: weekWeather, isLoading: weekWeatherIsLoading, isError: weekWeatherIsError } = useQuery<any>(['week'], getWeekWeather, {staleTime: 600000})
   const { data: hourWeather, isLoading: hourWeatherIsLoading, isError: hourWeatherIsError } = useQuery<any>(['hour'], getHourWeather, {staleTime: 600000})
+  const { data: sunrise, isLoading: sunriseIsLoading, isError: sunriseIsError } = useQuery(['sunrise'], getSunrise, {staleTime: 600000})
   // const { data: weekWeatherTW, isLoading: weekWeatherIsLoadingTW, isError: weekWeatherIsErrorTW } = useQuery<any>(['weekTW'], getWeekWeatherTW, {staleTime: 60000})
   // const { data: hourWeatherTW, isLoading: hourWeatherIsLoadingTW, isError: hourWeatherIsErrorTW } = useQuery<any>(['hourTW'], getHourWeatherTW, {staleTime: 60000})
-  // const { data: sunrise } = useQuery(['sunrise'], getSunrise, {staleTime: 600000})
-  // console.log("sunrise", sunrise)
   // if(!weekWeatherIsLoadingTW && !weekWeatherIsErrorTW) console.log("weekWeatherTW", weekWeatherTW)
 
-  if(weekWeatherIsLoading || hourWeatherIsLoading) return <h2>Loading...</h2>
+  if(weekWeatherIsLoading || hourWeatherIsLoading || sunriseIsLoading) return <h2>Loading...</h2>
 
-  if(weekWeatherIsError || hourWeatherIsError) return <div>Something went wrong...</div>
+  if(weekWeatherIsError || hourWeatherIsError || sunriseIsError) return <div>Something went wrong...</div>
 
   const weatherMap = new Map()
   if(weekWeather?.length > 0 && hourWeather?.length > 0) {
@@ -61,11 +63,14 @@ const WeatherContextProvider = ({ children }: WeatherContextProviderProps) => {
     //   })
     //   console.log("res", res.reduce((acc, [key, value]) => ({ ...acc, [key]: value}), {}))
     // }
-}
-// console.log("weatherMap", JSON.stringify(Object.fromEntries(weatherMap)))
+  }
+  const sunriseAndSunset: sunriseAndSunsetType = sunrise.reduce((acc: sunriseAndSunsetType, { CountyName, time }: sunriseListType) => {
+    acc[twCounty[CountyName]] = time
+    return acc;
+  }, {});
 
   return (
-    <WeatherContext.Provider value={{ weatherMap }}>
+    <WeatherContext.Provider value={{ weatherMap, sunriseAndSunset }}>
       {children}
     </WeatherContext.Provider>
   )

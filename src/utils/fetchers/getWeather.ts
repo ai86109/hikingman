@@ -1,4 +1,5 @@
 import axios from "axios"
+import { getWeekDateFromToday } from "utils/getDate"
 
 const urlBase = `https://opendata.cwb.gov.tw/fileapi/v1/opendataapi/`
 
@@ -38,7 +39,8 @@ export const getHourWeatherTW = async () => {
 }
 
 export const getSunrise = async () => {
-  const res: any = await getAPIData(`https://opendata.cwb.gov.tw/api/v1/rest/datastore/A-B0062-001?Authorization=${process.env.REACT_APP_APIKEY}&locationName=中央尖山&timeFrom=2023-03-31&timeTo=2023-04-07`)
+  const { start, end } = getWeekDateFromToday()
+  const res: any = await getAPIData(`https://opendata.cwb.gov.tw/api/v1/rest/datastore/A-B0062-001?Authorization=${process.env.REACT_APP_APIKEY}&parameter=SunRiseTime,SunSetTime&timeFrom=${start}&timeTo=${end}`)
   const datas = res.data.records.locations.location
   return datas
 }

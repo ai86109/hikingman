@@ -1,17 +1,28 @@
 import { Box } from "@chakra-ui/react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import MtHeader from "./MtHeader";
 import OverviewRecentWeather from "./OverviewRecentWeather";
 import WeatherForecast from "./WeatherForecast";
 import { useContext } from 'react'
 import { WeatherContext } from 'context/WeatherContext'
 import { WeatherDataType } from "types/WeatherDataType";
+import { MtInfoType } from "types/MtInfoType";
+import data from 'data/mtInfo.json'
 
 export default function MountainWeatherDetails() {
+  // const matches = /^D(00[1-9]|0[0-9][0-9]|1[0-4][0-9]|15[0-1])$/
+  // const navigate = useNavigate()
+  const { weatherMap, sunriseAndSunset } = useContext(WeatherContext)
   const { mountainId } = useParams()
-  const { weatherMap } = useContext(WeatherContext)
+  // if(!mountainId || !mountainId?.match(matches)) {
+  //   console.log("in")
+    // navigate("/")
+    // return null
+  // }
+  const mtInfo: MtInfoType = (data as Record<string, MtInfoType>)[mountainId as string]
   const { basicInfo, weekWeatherData, hourWeatherData } = weatherMap.get(mountainId as string) as WeatherDataType
-  // console.log("weekWeatherData", weekWeatherData)
+  const sunriseAndSunsetList = sunriseAndSunset[mtInfo.county[0]]
+
   return (
     <Box 
       bg="green" 
@@ -20,9 +31,9 @@ export default function MountainWeatherDetails() {
       backgroundRepeat="no-repeat"
       p={3}
     >
-      <MtHeader basicInfo={basicInfo} />
+      <MtHeader mtInfo={mtInfo} />
       <OverviewRecentWeather weekWeatherData={weekWeatherData} hourWeatherData={hourWeatherData} />
-      <WeatherForecast weekWeatherData={weekWeatherData} hourWeatherData={hourWeatherData} />
+      <WeatherForecast weekWeatherData={weekWeatherData} hourWeatherData={hourWeatherData} sunriseAndSunsetList={sunriseAndSunsetList} />
     </Box>
   )
 }

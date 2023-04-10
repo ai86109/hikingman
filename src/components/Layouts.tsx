@@ -8,7 +8,10 @@ export default function Layouts() {
 
   const handleChange = () => {
     i18n.changeLanguage(i18n.language === 'en' ? 'zh-tw' : 'en')
-    toggleTemperature()
+    if(
+      (i18n.language === 'en' && isCelsius) || 
+      (i18n.language !== 'en' && !isCelsius)
+    ) toggleTemperature()
   }
 
   return (

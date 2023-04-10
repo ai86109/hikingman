@@ -1,4 +1,4 @@
-import { weatherDateInfoType, hourWeatherDataType, weekWeatherDataType } from "types/WeatherDataType"
+import { weatherDateInfoType, hourWeatherDataType, weekWeatherDataType, sunriseAndSunsetTime } from "types/WeatherDataType"
 import { getDateInfo, getTime } from "./getDate"
 
 export const getWxName = (wx: string) => {
@@ -27,7 +27,7 @@ export const getPoP6hrOfTheDay = (PoP6hr: any) => {
   return result
 }
 
-export const getWeekWeatherDetail = (data: any[]) => {
+export const getWeekWeatherDetail = (data: any[], sunriseAndSunsetList: sunriseAndSunsetTime[]) => {
   const weekWeatherData: weekWeatherDataType[] = []
   const dateString = data[0].time[0].startTime
   for(let i = 0; i < 7; i++) {
@@ -46,7 +46,11 @@ export const getWeekWeatherDetail = (data: any[]) => {
         speed: data[11].time[i].elementValue[1].value //蒲福風級
       },
       maxComfortIdx: data[7].time[i].elementValue[0].value,
-      minComfortIdx: data[8].time[i].elementValue[0].value
+      minComfortIdx: data[8].time[i].elementValue[0].value,
+      sunriseAndSunset: {
+        sunRiseTime: sunriseAndSunsetList[i].SunRiseTime,
+        sunSetTime: sunriseAndSunsetList[i].SunSetTime
+      }
     }
     weekWeatherData.push(weatherInfo)
   }

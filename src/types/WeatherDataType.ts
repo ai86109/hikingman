@@ -34,7 +34,11 @@ export type weekWeatherDataType = {
     speed: string
   },
   maxComfortIdx: string,
-  minComfortIdx: string
+  minComfortIdx: string,
+  sunriseAndSunset: {
+    sunRiseTime: string,
+    sunSetTime: string
+  }
 }
 
 export type hourWeatherDataType = {
@@ -54,4 +58,19 @@ export type hourWeatherDataType = {
 export interface hourWeatherListType {
   date: weatherDateInfoType,
   weatherData: hourWeatherDataType[]
+}
+
+export interface sunriseAndSunsetTime {
+  Date: string, 
+  SunRiseTime: string, 
+  SunSetTime: string 
+}
+
+export type sunriseListType = {
+  CountyName: string, 
+  time: sunriseAndSunsetTime[]
+}
+
+export type sunriseAndSunsetType = {
+  [key: string]: sunriseAndSunsetTime[]
 }

@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getWeekWeatherDetail } from "utils/getWeather";
 import { convertCelsiusToFahrenheit } from 'utils/unitCalculate'
-import { weekWeatherDataType } from "types/WeatherDataType"
+import { sunriseAndSunsetTime, weekWeatherDataType } from "types/WeatherDataType"
 import { TFunction } from "i18next";
 import SelectButtons from "components/SelectButtons";
 import { weekTabs } from "data/constant";
@@ -96,7 +96,9 @@ const TableBlock = ({
                 <Td>{datum.date.month}/{datum.date.date} ({t(`time.daysOfTheWeek.${datum.date.day}`)})</Td>
                 <Td textAlign="center" bg="white">{datum.maxComfortIdx} / {datum.minComfortIdx}</Td>
                 {/* sunrise / sunset */}
-                <Td textAlign="center" bg="white">sunrise / sunset</Td>
+                <Td textAlign="center" bg="white">
+                  {datum.sunriseAndSunset.sunRiseTime} / {datum.sunriseAndSunset.sunSetTime}
+                </Td>
               </Tr>
             ))
           }
@@ -107,15 +109,15 @@ const TableBlock = ({
 }
 
 export default function WeekForecast({ 
-  weekWeatherData
+  weekWeatherData,
+  sunriseAndSunsetList
 }: {
-  weekWeatherData: any[]
+  weekWeatherData: any[],
+  sunriseAndSunsetList: sunriseAndSunsetTime[]
 }) {
   const { t } = useTranslation()
   const [selectedType, setSelectedType] = useState('table1')
-  const data = getWeekWeatherDetail(weekWeatherData)
-
-  // console.log("weekWeatherData", weekWeatherData, "data", data)
+  const data = getWeekWeatherDetail(weekWeatherData, sunriseAndSunsetList)
 
   return (
     <>

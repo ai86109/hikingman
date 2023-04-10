@@ -1,13 +1,16 @@
 import { Box, TabList, Tabs, Tab, TabPanels, TabPanel } from "@chakra-ui/react";
+import { sunriseAndSunsetTime } from "types/WeatherDataType";
 import HoursForecast from "./HoursForecast";
 import WeekForecast from "./WeekForecast";
 
 export default function WeatherForecast({ 
   weekWeatherData,
-  hourWeatherData
+  hourWeatherData,
+  sunriseAndSunsetList
 }: {
   weekWeatherData: any[],
-  hourWeatherData: any[]
+  hourWeatherData: any[],
+  sunriseAndSunsetList: sunriseAndSunsetTime[]
 }) {
   return (
     <Box mt={6}>
@@ -18,7 +21,7 @@ export default function WeatherForecast({
         </TabList>
         <TabPanels bg="white">
           <TabPanel px="unset">
-            <WeekForecast weekWeatherData={weekWeatherData} />
+            <WeekForecast weekWeatherData={weekWeatherData} sunriseAndSunsetList={sunriseAndSunsetList} />
           </TabPanel>
           <TabPanel>
             <HoursForecast hourWeatherData={hourWeatherData} />

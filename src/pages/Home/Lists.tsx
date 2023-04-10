@@ -19,6 +19,24 @@ export default function Lists({
   const { t } = useTranslation()
   const list = getSearchedList(Array.from(data.values()), inputVal, t)
   // console.log("list", list)
+  // let res: any = {}
+  // for(let [key, value] of (data as any).entries()) {
+  //   res[key] = {
+  //     "locationName": value.basicInfo.locationName,
+  //     "height": 3,
+  //     "cate": [],
+  //     "park": "",
+  //     "county": [],
+  //     "difficulty": ""
+  //   }
+  // }
+  // let ress: any = {}
+  // const sortedKeys = Object.keys(res).sort()
+  // for(let i = 0; i < sortedKeys.length; i++) {
+  //   ress[sortedKeys[i]] = res[sortedKeys[i]]
+  // }
+
+  // console.log("ress", ress)
 
   return (
     <>
