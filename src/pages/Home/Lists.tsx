@@ -7,6 +7,7 @@ import { WeatherMapType, WeatherDataType } from 'types/WeatherDataType'
 import { getWxName } from 'utils/getWeather'
 import { convertCelsiusToFahrenheit } from 'utils/unitCalculate'
 import { getSearchedList } from 'utils/search'
+import { getTime } from 'utils/getDate'
 
 export default function Lists({ 
   data,
@@ -40,7 +41,7 @@ export default function Lists({
                 <Flex alignItems={'center'}>
                   <Tooltip label={t(`Wx.${getWxName(mountain.hourWeatherData[9].time[0].elementValue[0].value)}`)}>
                     <Image 
-                      src={require(`assets/icons/Wx/wx_day_${mountain.hourWeatherData[9].time[0].elementValue[1].value}.svg`)} 
+                      src={require(`assets/icons/Wx/wx_${getTime(mountain.hourWeatherData[9].time[0].startTime) < 18 ? "day" : "night"}_${mountain.hourWeatherData[9].time[0].elementValue[1].value}.svg`)} 
                       alt={t(`Wx.${getWxName(mountain.hourWeatherData[9].time[0].elementValue[0].value)}`) || "--"}
                       w="40px" 
                     />
