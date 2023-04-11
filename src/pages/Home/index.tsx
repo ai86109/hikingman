@@ -3,6 +3,7 @@ import Lists from './Lists'
 import { useContext, useState } from 'react'
 import { WeatherContext } from 'context/WeatherContext'
 import { useTranslation } from 'react-i18next'
+import { Box } from '@chakra-ui/react'
 
 export default function Home() {
   const { weatherMap } = useContext(WeatherContext)
@@ -12,9 +13,9 @@ export default function Home() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setInputVal(e.target.value)
 
   return (
-    <div>
+    <Box mt={6}>
       <Search placeholder={t('search.placeholder')} inputVal={inputVal} handleChange={handleChange} />
       <Lists data={weatherMap} inputVal={inputVal} />
-    </div>
+    </Box>
   )
 }

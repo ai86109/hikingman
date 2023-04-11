@@ -19,7 +19,6 @@ export default function Lists({
   const { isCelsius } = useContext(TemperatureContext)
   const { t } = useTranslation()
   const list = getSearchedList(Array.from(data.values()), inputVal, t)
-  console.log("list", list)
 
   return (
     <>
