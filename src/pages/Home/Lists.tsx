@@ -1,4 +1,4 @@
-import { Card, CardBody, CardFooter, Stack, Heading, Button, Flex, Box } from '@chakra-ui/react'
+import { Card, CardBody, CardFooter, Stack, Heading, Button, Flex, Box, Image, Tooltip } from '@chakra-ui/react'
 import { TemperatureContext } from 'context/TemperatureContext'
 import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -18,6 +18,7 @@ export default function Lists({
   const { isCelsius } = useContext(TemperatureContext)
   const { t } = useTranslation()
   const list = getSearchedList(Array.from(data.values()), inputVal, t)
+  console.log("list", list)
 
   return (
     <>
@@ -36,9 +37,15 @@ export default function Lists({
             </Heading>
             <Stack direction={{ base: 'row' }} alignItems={{ base: 'center' }}>
               <CardBody>
-                <Flex>
-                  <Box>{t(`Wx.${getWxName(mountain.hourWeatherData[9].time[0].elementValue[0].value)}`)}</Box>，
-                  <Box>
+                <Flex alignItems={'center'}>
+                  <Tooltip label={t(`Wx.${getWxName(mountain.hourWeatherData[9].time[0].elementValue[0].value)}`)}>
+                    <Image 
+                      src={require(`assets/icons/Wx/wx_day_${mountain.hourWeatherData[9].time[0].elementValue[1].value}.svg`)} 
+                      alt={t(`Wx.${getWxName(mountain.hourWeatherData[9].time[0].elementValue[0].value)}`) || "--"}
+                      w="40px" 
+                    />
+                  </Tooltip>
+                  <Box ml={4}>
                     {isCelsius 
                       ? mountain.hourWeatherData[0].time[0].elementValue.value 
                       : convertCelsiusToFahrenheit(mountain.hourWeatherData[0].time[0].elementValue.value)
@@ -50,7 +57,7 @@ export default function Lists({
               <CardFooter>
                 <Link to={mountain.basicInfo.id}>
                   <Button variant='solid' colorScheme='blue'>
-                    詳細
+                    {t('lists.detail')}
                   </Button>
                 </Link>
               </CardFooter>

@@ -7,6 +7,8 @@
   "wind": "Wind",
   "comfortIndex": "Comfort Index",
   "sunrise": "Sunrise & Sunset",
+  "search.placeholder": "Enter the mountain",
+  "lists.detail": "Detail",
   "time.today": "Today",
   "time.tomorrow": "Tomorrow",
   "time.daysOfTheWeek.0": "Sun",
