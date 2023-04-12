@@ -1,13 +1,40 @@
-import { Image, TableContainer, Table, Thead, Tr, Th, Tbody, Td } from "@chakra-ui/react";
+import { Image, TableContainer, Table, Thead, Tr, Th, Tbody, Td, Tooltip, Box, Text, Flex } from "@chakra-ui/react";
 import { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getWeekWeatherDetail } from "utils/getWeather";
+import { getCIindex, getWeekWeatherDetail, getWxName } from "utils/getWeather";
 import { convertCelsiusToFahrenheit } from 'utils/unitCalculate'
 import { sunriseAndSunsetTime, weekWeatherDataType } from "types/WeatherDataType"
 import { TFunction } from "i18next";
 import SelectButtons from "components/SelectButtons";
-import { weekTabs } from "data/constant";
+import { weekTabs, weekTabsIcon, windDirection } from "data/constant";
 import { TemperatureContext } from "context/TemperatureContext";
+import { getCurrentHour } from "utils/getDate";
+
+const CIBlock = ({
+  maxIndex,
+  minIndex
+} : {
+  maxIndex: number,
+  minIndex: number
+}) => {
+  const max = getCIindex(maxIndex)
+  const min = getCIindex(minIndex)
+
+  return (
+    <Flex alignItems="center">
+      {max !== min && 
+        <>
+          <Tooltip label={`${min}，${minIndex}`}>
+            <Image w="50px" src={require(`assets/icons/CI/${min}.png`)} />
+          </Tooltip>
+          ～
+        </>}
+      <Tooltip label={`${max}，${maxIndex}`}>
+        <Image w="50px" src={require(`assets/icons/CI/${max}.png`)} />
+      </Tooltip>
+    </Flex>
+  )
+}
 
 const TableBlock = ({ 
   data, 
@@ -19,6 +46,9 @@ const TableBlock = ({
   table: string
 }) => {
   const { isCelsius } = useContext(TemperatureContext)
+  const hour = getCurrentHour()
+  const isDayTime = hour >= 6 && hour < 18
+
   return (
     <TableContainer bg="white" borderRadius={10}>
       <Table variant='simple' bg="gray.200">
@@ -27,19 +57,19 @@ const TableBlock = ({
             <Th></Th>
             {table === "table1" && (
             <>
-              <Th textAlign={"center"}>天気 / 降水確率</Th>
-              <Th textAlign={"center"}>気温({isCelsius ? "°C" : "°F"})</Th>
+              <Th textAlign={"center"}>{t('forecast.weatherAndPoP')}</Th>
+              <Th textAlign={"center"}>{t('forecast.temp')}({isCelsius ? "°C" : "°F"})</Th>
             </>)}
             {table === "table2" && (
             <>
-              <Th textAlign={"center"}>體感溫度({isCelsius ? "°C" : "°F"})</Th>
-              <Th textAlign={"center"}>濕度</Th>
-              <Th textAlign={"center"}>風</Th>
+              <Th textAlign={"center"} flexWrap="wrap">{t('forecast.bodyTemp')}({isCelsius ? "°C" : "°F"})</Th>
+              <Th textAlign={"center"}>{t('forecast.humidity')}</Th>
+              <Th textAlign={"center"}>{t('wind')}</Th>
             </>)}
             {table === "table3" && (
             <>
-              <Th textAlign={"center"}>舒適度</Th>
-              <Th textAlign={"center"}>日出日落</Th>
+              <Th textAlign={"center"}>{t('forecast.comfortIndex')}</Th>
+              <Th textAlign={"center"}>{t('forecast.sunrise')}</Th>
             </>)}
           </Tr>
         </Thead>
@@ -48,22 +78,39 @@ const TableBlock = ({
           data.length > 0 && 
             data.map((datum) => (
               <Tr key={`${table}-${datum.date.day}`}>
-                <Td>{datum.date.month}/{datum.date.date} ({t(`time.daysOfTheWeek.${datum.date.day}`)})</Td>
-                <Td display={"flex"} flexDirection={"row"} bg="white">
-                  {/* image need to change */}
-                  <Image src="https://cdn1.n-kishou.co.jp/image/icon_weather/13.png" w="40px" /> 
-                  {/* Wx 用 tooltip 表示 */}
-                  <div>{datum.PoP || "--"}%</div>
+                <Td>
+                  <Box display="flex" flexDirection="row">
+                    {datum.date.month}/{datum.date.date}
+                    <Text as="b" fontSize="12px" ml="2px">({t(`time.daysOfTheWeek.${datum.date.day}`)})</Text>
+                  </Box>
                 </Td>
-                <Td textAlign="center" bg="white">
-                  {isCelsius 
-                    ? datum.maxTemp 
-                    : convertCelsiusToFahrenheit(Number(datum.maxTemp))
-                  } / 
-                  {isCelsius 
-                    ? datum.minTemp : 
-                    convertCelsiusToFahrenheit(Number(datum.minTemp))
-                  }
+                <Td display={"flex"} flexDirection={"row"} bg="white" alignItems="center">
+                  <Tooltip label={t(`Wx.${getWxName(datum.Wx.text)}`)}>
+                    <Image 
+                      src={require(`assets/icons/Wx/wx_${isDayTime ? "day" : "night"}_${datum.Wx.index}.svg`)} 
+                      alt={t(`Wx.${getWxName(datum.Wx.text)}`) || "--"}
+                      boxSize="40px"
+                      objectFit={'contain'}
+                    />
+                  </Tooltip>
+                  <Text ml={2} as="b">{datum.PoP || "--"}%</Text>
+                </Td>
+                <Td bg="white">
+                  <Flex justifyContent="center">
+                    <Text color="#ed4350" as="b">
+                      {isCelsius 
+                        ? datum.maxTemp 
+                        : convertCelsiusToFahrenheit(Number(datum.maxTemp))
+                      }
+                    </Text>
+                    <Text mx={2}>/</Text>
+                    <Text color="#1477d0" as="b">
+                      {isCelsius 
+                        ? datum.minTemp 
+                        : convertCelsiusToFahrenheit(Number(datum.minTemp))
+                      }
+                    </Text>
+                  </Flex>
                 </Td>
               </Tr>
             ))
@@ -72,20 +119,48 @@ const TableBlock = ({
           data.length > 0 && 
             data.map((datum) => (
               <Tr key={`${table}-${datum.date.day}`}>
-                <Td>{datum.date.month}/{datum.date.date} ({t(`time.daysOfTheWeek.${datum.date.day}`)})</Td>
-                <Td textAlign="center" bg="white">
-                  {isCelsius 
-                    ? datum.maxBodyTemp 
-                    : convertCelsiusToFahrenheit(Number(datum.maxBodyTemp))
-                  } / 
-                  {isCelsius 
-                    ? datum.minBodyTemp 
-                    : convertCelsiusToFahrenheit(Number(datum.minBodyTemp))
-                  }
+                <Td px={3}>
+                  <Box display="flex" flexDirection="row">
+                    {datum.date.month}/{datum.date.date}
+                    <Text as="b" fontSize="12px" ml="2px">({t(`time.daysOfTheWeek.${datum.date.day}`)})</Text>
+                  </Box>
                 </Td>
-                <Td textAlign="center" bg="white">{datum.humidity}</Td>
-                {/* wind direction image */}
-                <Td textAlign="center" bg="white">{datum.wind.direction} / {datum.wind.speed}</Td>
+                <Td textAlign="center" bg="white">
+                  <Flex justifyContent="center">
+                    <Text color="#ed4350" as="b">
+                      {isCelsius 
+                        ? datum.maxBodyTemp 
+                        : convertCelsiusToFahrenheit(Number(datum.maxBodyTemp))
+                      }
+                    </Text>
+                    <Text mx={2}>/</Text>
+                    <Text color="#1477d0" as="b">
+                      {isCelsius 
+                        ? datum.minBodyTemp 
+                        : convertCelsiusToFahrenheit(Number(datum.minBodyTemp))
+                      }
+                    </Text>
+                  </Flex>
+                </Td>
+                <Td textAlign="center" bg="white">{datum.humidity || "--"}%</Td>
+                <Td 
+                  textAlign="center" 
+                  bg={Number(datum.wind.speed) >= 8 
+                    ? "red" 
+                    : Number(datum.wind.speed) >= 6
+                      ? "yellow" 
+                      : "white"}
+                >
+                  <Flex direction="column" justifyContent="center" alignItems="center">
+                    <Image
+                      src={require('assets/icons/windDirection.png')}
+                      w="14px"
+                      mb={1}
+                      transform={`rotate(${windDirection[datum.wind.direction]}deg)`}
+                    />
+                    <Text as="b">{datum.wind.speed}</Text>
+                  </Flex>
+                </Td>
               </Tr>
             ))
           }
@@ -93,9 +168,15 @@ const TableBlock = ({
           data.length > 0 && 
             data.map((datum) => (
               <Tr key={`${table}-${datum.date.day}`}>
-                <Td>{datum.date.month}/{datum.date.date} ({t(`time.daysOfTheWeek.${datum.date.day}`)})</Td>
-                <Td textAlign="center" bg="white">{datum.maxComfortIdx} / {datum.minComfortIdx}</Td>
-                {/* sunrise / sunset */}
+                <Td>
+                  <Box display="flex" flexDirection="row">
+                    {datum.date.month}/{datum.date.date}
+                    <Text as="b" fontSize="12px" ml="2px">({t(`time.daysOfTheWeek.${datum.date.day}`)})</Text>
+                  </Box>
+                </Td>
+                <Td textAlign="center" bg="white" px={2}>
+                  <CIBlock maxIndex={Number(datum.maxComfortIdx)} minIndex={Number(datum.minComfortIdx)} />
+                </Td>
                 <Td textAlign="center" bg="white">
                   {datum.sunriseAndSunset.sunRiseTime} / {datum.sunriseAndSunset.sunSetTime}
                 </Td>
@@ -123,6 +204,7 @@ export default function WeekForecast({
     <>
       <SelectButtons 
         tabs={weekTabs}
+        icons={weekTabsIcon}
         setSelectedType={setSelectedType} 
       />
       <TableBlock data={data} t={t} table={selectedType} />

@@ -2,12 +2,20 @@ type subTabsType = {
   [x: string]: string[]
 }
 
+type tabsIconType = {
+  [x: string]: string
+}
+
 type badgeColorType = {
   [x: string]: string
 }
 
 type twCountyType = {
   [x: string]: string
+}
+
+type windDirectionType = {
+  [x: string]: number
 }
 
 export const weekTabs: subTabsType = {
@@ -20,6 +28,18 @@ export const hourTabs: subTabsType = {
   "table1": ["weather", "temp", "probabilityOfPrecipitation"],
   "table2": ["humidity", "wind"],
   "table3": ["bodyTemp", "comfortIndex"]
+}
+
+export const weekTabsIcon: tabsIconType = {
+  "table1": "https://1.bp.blogspot.com/-aL7kYiiQLsQ/Wp94LnyOJ1I/AAAAAAABKrc/8GoMzMIipwkffwR6uyieCobTimT4W2pKwCLcBGAs/s400/machine_ondo_shitsudokei.png",
+  "table2": "https://1.bp.blogspot.com/-GSOdiltwLdE/YHOSs5Nn5bI/AAAAAAABdoY/WHKSUwHeKfEXEV9YG8wkYtYyJsYqPp_1gCNcBGAsYHQ/s180-c/nature_kaze.png",
+  "table3": "https://4.bp.blogspot.com/-4WiPCzXztgM/WD_cX8RogBI/AAAAAAABAEc/OQzqLlcMhZs_eqMt_8AItsIXt3inScRCACLcB/s300/sun_red1.png"
+}
+
+export const hourTabsIcon: tabsIconType = {
+  "table1": "https://1.bp.blogspot.com/-aL7kYiiQLsQ/Wp94LnyOJ1I/AAAAAAABKrc/8GoMzMIipwkffwR6uyieCobTimT4W2pKwCLcBGAs/s400/machine_ondo_shitsudokei.png",
+  "table2": "https://1.bp.blogspot.com/-GSOdiltwLdE/YHOSs5Nn5bI/AAAAAAABdoY/WHKSUwHeKfEXEV9YG8wkYtYyJsYqPp_1gCNcBGAsYHQ/s180-c/nature_kaze.png",
+  "table3": "https://2.bp.blogspot.com/-3tqOSBlyens/UsZtKFlgtRI/AAAAAAAAcyY/GtGKv2OEDIU/s400/kids_hashirimawaru_snow.png"
 }
 
 export const badgeColor: badgeColorType = {
@@ -69,4 +89,15 @@ export const twCounty: twCountyType = {
   "澎湖縣": "Penghu",
   "彰化縣": "Changhua",
   "連江縣": "Matsu"
+}
+
+export const windDirection: windDirectionType = {
+  "S": 0,
+  "SW": 45,
+  "W": 90,
+  "NW": 135,
+  "N": 180,
+  "NE": 225,
+  "E": 270,
+  "SE": 315
 }

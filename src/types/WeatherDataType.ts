@@ -22,7 +22,10 @@ export type weatherDateInfoType = {
 
 export type weekWeatherDataType = {
   date: weatherDateInfoType,
-  Wx: string,
+  Wx: {
+    text: string,
+    index: string
+  },
   PoP: string,
   maxTemp: string,
   minTemp: string,
@@ -43,7 +46,10 @@ export type weekWeatherDataType = {
 
 export type hourWeatherDataType = {
   time: number,
-  Wx: string,
+  Wx: {
+    text: string,
+    index: string
+  },
   PoP: string,
   temp: string,
   bodyTemp: string,

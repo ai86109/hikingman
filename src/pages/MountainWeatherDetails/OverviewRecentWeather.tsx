@@ -56,6 +56,8 @@ const RecentWeatherBlock = ({
   const maxTemp = time === 'today' ? weekWeatherData[3].time[0].elementValue.value : weekWeatherData[3].time[1].elementValue.value
   const minTemp = time === 'today' ? weekWeatherData[4].time[0].elementValue.value : weekWeatherData[4].time[1].elementValue.value
   const PoP6hr = time === 'today' ? PoP[0] : PoP[1]
+  const hour = getTime(weather.startTime)
+  const isDayTime = hour >= 6 && hour < 18
 
   return (
     <Flex direction={{ base: "row" }} justify={{ base: "space-between" }}>
@@ -68,7 +70,7 @@ const RecentWeatherBlock = ({
         <Flex direction={{ base: "column" }} alignItems={{ base: "center" }} mt={4}>
           <Tooltip label={t(`Wx.${getWxName(weather.elementValue[0].value)}`)}>
             <Image 
-              src={require(`assets/icons/Wx/wx_${getTime(weather.startTime) < 18 ? "day" : "night"}_${weather.elementValue[1].value}.svg`)} 
+              src={require(`assets/icons/Wx/wx_${isDayTime ? "day" : "night"}_${weather.elementValue[1].value}.svg`)} 
               alt={t(`Wx.${getWxName(weather.elementValue[0].value)}`) || "--"}
               boxSize="54px"
               objectFit={'contain'}
@@ -126,7 +128,7 @@ export default function OverviewRecentWeather({
   const PoP6hr = getPoP6hrOfTheDay(hourWeatherData[3].time)
 
   return (
-    <Box bg="white" borderRadius={10} px={2} py={8} mt={4}>
+    <Box bg="white" borderRadius={10} pr={3} py={8} mt={4}>
       <RecentWeatherBlock time="today" weekWeatherData={weekWeatherData} PoP={PoP6hr} />
       <Divider orientation='horizontal' m={[5, 0]} w="unset" />
       <RecentWeatherBlock time="tomorrow" weekWeatherData={weekWeatherData} PoP={PoP6hr} />
