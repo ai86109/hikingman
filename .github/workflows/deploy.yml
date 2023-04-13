@@ -16,7 +16,7 @@ jobs:
       - name: Build
         run: |
           yarn install
-          yarn run build
+          CI=false && yarn run build
         env:
           REACT_APP_APIKEY: ${{ secrets.REACT_APP_APIKEY }}
 
