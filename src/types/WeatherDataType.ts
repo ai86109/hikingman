@@ -14,15 +14,18 @@ export interface WeatherDataType {
 
 export type WeatherMapType = Map<string, WeatherDataType>
 
-export type weatherDateInfoType = {
+export interface weatherDateInfoType {
   month: number,
   date: number,
   day: number
 }
 
-export type weekWeatherDataType = {
+export interface weekWeatherDataType {
   date: weatherDateInfoType,
-  Wx: string,
+  Wx: {
+    text: string,
+    index: string
+  },
   PoP: string,
   maxTemp: string,
   minTemp: string,
@@ -41,9 +44,12 @@ export type weekWeatherDataType = {
   }
 }
 
-export type hourWeatherDataType = {
+export interface hourWeatherDataType {
   time: number,
-  Wx: string,
+  Wx: {
+    text: string,
+    index: string
+  },
   PoP: string,
   temp: string,
   bodyTemp: string,
@@ -66,11 +72,11 @@ export interface sunriseAndSunsetTime {
   SunSetTime: string 
 }
 
-export type sunriseListType = {
+export interface sunriseListType {
   CountyName: string, 
   time: sunriseAndSunsetTime[]
 }
 
-export type sunriseAndSunsetType = {
+export interface sunriseAndSunsetType {
   [key: string]: sunriseAndSunsetTime[]
 }

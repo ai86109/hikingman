@@ -24,3 +24,7 @@ export const getWeekDateFromToday = () => {
 
   return { start: formatDate(startDate), end: formatDate(endDate) }
 }
+
+export const getCurrentHour = () => {
+  return new Date(today).getHours()
+}
