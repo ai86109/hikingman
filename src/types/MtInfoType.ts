@@ -1,4 +1,4 @@
-export type MtInfoType = {
+export interface MtInfoType {
   locationName: string;
   height: number;
   cate: string[];

@@ -3,6 +3,7 @@ import { useQuery } from 'react-query'
 import { getWeekWeather, getHourWeather, getWeekWeatherTW, getHourWeatherTW, getSunrise } from 'utils/fetchers/getWeather'
 import { WeatherMapType, BasicInfoType, sunriseListType, sunriseAndSunsetType } from "types/WeatherDataType";
 import { twCounty } from "data/constant";
+import { Box, Skeleton, Spinner, Stack } from "@chakra-ui/react";
 
 interface WeatherContextProps {
   weatherMap: WeatherMapType,
@@ -26,9 +27,26 @@ const WeatherContextProvider = ({ children }: WeatherContextProviderProps) => {
   // const { data: hourWeatherTW, isLoading: hourWeatherIsLoadingTW, isError: hourWeatherIsErrorTW } = useQuery<any>(['hourTW'], getHourWeatherTW, {staleTime: 60000})
   // if(!weekWeatherIsLoadingTW && !weekWeatherIsErrorTW) console.log("weekWeatherTW", weekWeatherTW)
 
-  if(weekWeatherIsLoading || hourWeatherIsLoading || sunriseIsLoading) return <h2>Loading...</h2>
+  if(weekWeatherIsLoading || hourWeatherIsLoading || sunriseIsLoading) {
+    return (
+      <Stack pt={10} px={4}>
+        <Spinner
+          thickness='4px'
+          speed='0.65s'
+          emptyColor='gray.300'
+          color='gray'
+          size='xl'
+        />
+        <Skeleton height='40px' />
+        <Skeleton height='40px' />
+        <Skeleton height='50px' />
+        <Skeleton height='50px' />
+        <Skeleton height='50px' />
+      </Stack>
+    )
+  }
 
-  if(weekWeatherIsError || hourWeatherIsError || sunriseIsError) return <div>Something went wrong...</div>
+  if(weekWeatherIsError || hourWeatherIsError || sunriseIsError) return <Box>Something went wrong...</Box>
 
   const weatherMap = new Map()
   if(weekWeather?.length > 0 && hourWeather?.length > 0) {
@@ -71,7 +89,9 @@ const WeatherContextProvider = ({ children }: WeatherContextProviderProps) => {
 
   return (
     <WeatherContext.Provider value={{ weatherMap, sunriseAndSunset }}>
-      {children}
+      <Skeleton isLoaded={true}>
+        {children}
+      </Skeleton>
     </WeatherContext.Provider>
   )
 }

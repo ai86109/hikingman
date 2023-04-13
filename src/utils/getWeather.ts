@@ -34,7 +34,10 @@ export const getWeekWeatherDetail = (data: any[], sunriseAndSunsetList: sunriseA
     const { month, date, day } = getDateInfo(dateString, i)
     const weatherInfo: weekWeatherDataType = {
       date: { month, date, day },
-      Wx: data[12].time[i].elementValue[0].value,
+      Wx: { 
+        text: data[12].time[i].elementValue[0].value,
+        index: data[12].time[i].elementValue[1].value
+      },
       PoP: data[9].time[i].elementValue.value,
       maxTemp: data[3].time[i].elementValue.value,
       minTemp: data[4].time[i].elementValue.value,
@@ -62,7 +65,6 @@ export const getHourWeatherDetail = (data: any[]) => {
   const hourWeatherData = []
   let tempDate
   let timeIndex = 0
-  // console.log("data", data)
 
   for(let i = 0; i < data[0].time.length; i++) {
     const dateString = data[0].time[i].dataTime
@@ -84,7 +86,10 @@ export const getHourWeatherDetail = (data: any[]) => {
     
     const weatherInfo: hourWeatherDataType = {
       time: currentTime,
-      Wx: data[9].time[i].elementValue[0].value,
+      Wx: {
+        text: data[9].time[i].elementValue[0].value,
+        index: data[9].time[i].elementValue[1].value
+      },
       PoP: popData,
       temp: data[0].time[i].elementValue.value,
       bodyTemp: data[8].time[i].elementValue.value,
@@ -104,4 +109,32 @@ export const getHourWeatherDetail = (data: any[]) => {
     }
   }
   return hourWeatherData
+}
+
+export const getCIindex = (index: number) => {
+  let CItext
+  switch(true) {
+    case index <= 10:
+      CItext = "veryCold"
+      break
+    case index <= 15:
+      CItext = "cold"
+      break
+    case index <= 19:
+      CItext = "slightCold"
+      break
+    case index <= 26:
+      CItext = "cozy"
+      break
+    case index <= 30:
+      CItext = "hot"
+      break
+    case index > 30:
+      CItext = "veryHot"
+      break
+    default:
+      CItext = "cozy"
+
+  }
+  return CItext
 }

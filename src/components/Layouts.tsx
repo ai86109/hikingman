@@ -15,8 +15,8 @@ export default function Layouts() {
   }
 
   return (
-    <Flex bg="green" p={2} mb={6} justifyContent="space-between">
-      <Switch colorScheme='teal' isChecked={isCelsius} onChange={toggleTemperature} />
+    <Flex bg="green" p={2} justifyContent="flex-end" alignItems="center">
+      <Switch colorScheme='teal' isChecked={isCelsius} onChange={toggleTemperature} mr={4} />
       <Box onClick={handleChange}>
         {i18n.language === 'en' ? '中文' : "EN"}
       </Box>

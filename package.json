@@ -2,7 +2,9 @@
   "name": "hikingman",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://ai86109.github.io/hikingman",
   "dependencies": {
+    "@chakra-ui/icons": "^2.0.18",
     "@chakra-ui/react": "^2.5.1",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
@@ -15,6 +17,7 @@
     "@types/react-dom": "^18.0.0",
     "axios": "^1.3.4",
     "framer-motion": "^10.2.4",
+    "gh-pages": "^5.0.0",
     "i18next": "^22.4.13",
     "i18next-http-backend": "^2.2.0",
     "react": "^18.2.0",
@@ -27,6 +30,8 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
