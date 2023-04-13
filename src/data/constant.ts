@@ -1,4 +1,4 @@
-type subTabsType = {
+interface subTabsType {
   [x: string]: string[]
 }
 
@@ -6,15 +6,11 @@ type tabsIconType = {
   [x: string]: string
 }
 
-type badgeColorType = {
-  [x: string]: string
-}
+type badgeColorType = tabsIconType
 
-type twCountyType = {
-  [x: string]: string
-}
+type twCountyType = tabsIconType
 
-type windDirectionType = {
+interface windDirectionType {
   [x: string]: number
 }
 
