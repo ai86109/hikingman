@@ -15,16 +15,10 @@ export default function MountainWeatherDetails() {
   const navigate = useNavigate()
   const { weatherMap, sunriseAndSunset } = useContext(WeatherContext)
   const { mountainId } = useParams()
-  // if(!mountainId || !mountainId?.match(matches)) {
-  //   console.log("in")
-    // navigate("/")
-    // return null
-  // }
   const id: string = 
     mountainId 
       ? matches.test(mountainId) ? mountainId : "D001"
       : "D001"
-  navigate(`/${id}`, { replace: true })
   const mtInfo: MtInfoType = (data as Record<string, MtInfoType>)[id]
   const { weekWeatherData, hourWeatherData } = weatherMap.get(id) as WeatherDataType
   const sunriseAndSunsetList = sunriseAndSunset[mtInfo.county[0]]
