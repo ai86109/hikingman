@@ -8,8 +8,8 @@ function App() {
     <div className="App">
       <Layouts />
       <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/:mountainId' element={<MountainWeatherDetails />} />
+        <Route path='/hikingman/' element={<Home />} />
+        <Route path='/hikingman/:mountainId' element={<MountainWeatherDetails />} />
       </Routes>
     </div>
   );

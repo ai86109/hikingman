@@ -24,7 +24,7 @@ export default function MountainWeatherDetails() {
   const sunriseAndSunsetList = sunriseAndSunset[mtInfo.county[0]]
 
   useEffect(() => {
-    navigate(`/${id}`, { replace: true })
+    navigate(`/hikingman/${id}`, { replace: true })
   }, [id, navigate])
 
   return (
