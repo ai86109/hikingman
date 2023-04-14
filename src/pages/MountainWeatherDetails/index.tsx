@@ -21,7 +21,7 @@ export default function MountainWeatherDetails() {
     // return null
   // }
   const mtInfo: MtInfoType = (data as Record<string, MtInfoType>)[mountainId as string]
-  const { basicInfo, weekWeatherData, hourWeatherData } = weatherMap.get(mountainId as string) as WeatherDataType
+  const { weekWeatherData, hourWeatherData } = weatherMap.get(mountainId as string) as WeatherDataType
   const sunriseAndSunsetList = sunriseAndSunset[mtInfo.county[0]]
 
   return (

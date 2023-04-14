@@ -7,7 +7,7 @@ export default function Layouts() {
   const { isCelsius, toggleTemperature } = useContext(TemperatureContext)
 
   const handleChange = () => {
-    i18n.changeLanguage(i18n.language === 'en' ? 'zh-tw' : 'en')
+    i18n.changeLanguage(i18n.language === 'en' ? 'zh-TW' : 'en')
     if(
       (i18n.language === 'en' && isCelsius) || 
       (i18n.language !== 'en' && !isCelsius)
