@@ -9,6 +9,7 @@ import SelectButtons from "components/SelectButtons";
 import { weekTabs, weekTabsIcon, windDirection } from "data/constant";
 import { TemperatureContext } from "context/TemperatureContext";
 import { getCurrentHour } from "utils/getDate";
+import NoData from "components/NoData";
 
 const CIBlock = ({
   maxIndex,
@@ -178,7 +179,10 @@ const TableBlock = ({
                   <CIBlock maxIndex={Number(datum.maxComfortIdx)} minIndex={Number(datum.minComfortIdx)} />
                 </Td>
                 <Td textAlign="center" bg="white">
-                  {datum.sunriseAndSunset.sunRiseTime} / {datum.sunriseAndSunset.sunSetTime}
+                  {datum.sunriseAndSunset.sunRiseTime.length > 0
+                    ? <>{datum.sunriseAndSunset.sunRiseTime} / {datum.sunriseAndSunset.sunSetTime}</>
+                    : <>--</>
+                  }
                 </Td>
               </Tr>
             ))
@@ -205,9 +209,13 @@ export default function WeekForecast({
       <SelectButtons 
         tabs={weekTabs}
         icons={weekTabsIcon}
+        selectedType={selectedType}
         setSelectedType={setSelectedType} 
       />
-      <TableBlock data={data} t={t} table={selectedType} />
+      {data.length > 0 
+        ? <TableBlock data={data} t={t} table={selectedType} />
+        : <NoData />
+      }
     </>
   )
 }

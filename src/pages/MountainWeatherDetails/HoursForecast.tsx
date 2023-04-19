@@ -162,6 +162,7 @@ export default function HoursForecast({
       <SelectButtons
         tabs={hourTabs}
         icons={hourTabsIcon}
+        selectedType={selectedType}
         setSelectedType={setSelectedType} 
       />
       <TableBlock data={data} t={t} table={selectedType} />

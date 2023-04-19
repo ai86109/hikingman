@@ -5,10 +5,12 @@ import { useTranslation } from "react-i18next"
 export default function SelectButtons({
   tabs,
   icons,
+  selectedType,
   setSelectedType
 } : {
   tabs: { [x: string]: string[] },
   icons: { [x: string]: string },
+  selectedType: string,
   setSelectedType: Dispatch<SetStateAction<string>>
 }) {
   const { t } = useTranslation()
@@ -19,7 +21,7 @@ export default function SelectButtons({
       {Object.keys(tabs).map((tab: string) => (
         <Flex 
           key={tab} 
-          bg="blue.100" 
+          bg="blue.100"
           w="45%" 
           p={3} 
           borderRadius={10} 
@@ -28,6 +30,7 @@ export default function SelectButtons({
           onClick={() => handleClick(tab)}
           flexDirection="column"
           alignItems="center"
+          opacity={tab === selectedType ? "1" : "0.5"}
         >
           <Image 
             src={icons[tab]}

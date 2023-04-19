@@ -9,6 +9,7 @@ import { WeatherDataType } from "types/WeatherDataType";
 import { MtInfoType } from "types/MtInfoType";
 import data from 'data/mtInfo.json'
 import Back from "components/Back";
+import NoData from "components/NoData";
 
 export default function MountainWeatherDetails() {
   const matches = /^D(00[1-9]|0[0-9][0-9]|1[0-4][0-9]|15[0-1])$/
@@ -20,8 +21,8 @@ export default function MountainWeatherDetails() {
       ? matches.test(mountainId) ? mountainId : "D001"
       : "D001"
   const mtInfo: MtInfoType = (data as Record<string, MtInfoType>)[id]
-  const { weekWeatherData, hourWeatherData } = weatherMap.get(id) as WeatherDataType
-  const sunriseAndSunsetList = sunriseAndSunset[mtInfo.county[0]]
+  const { weekWeatherData = [], hourWeatherData = [] } = weatherMap.size > 0 ? weatherMap.get(id) as WeatherDataType : {}
+  const sunriseAndSunsetList = Object.keys(sunriseAndSunset).length > 0 ? sunriseAndSunset[mtInfo.county[0]] : []
 
   useEffect(() => {
     navigate(`/hikingman/${id}`, { replace: true })
@@ -39,8 +40,13 @@ export default function MountainWeatherDetails() {
         mt={6}
       >
         <MtHeader mtInfo={mtInfo} />
-        <OverviewRecentWeather weekWeatherData={weekWeatherData} hourWeatherData={hourWeatherData} />
-        <WeatherForecast weekWeatherData={weekWeatherData} hourWeatherData={hourWeatherData} sunriseAndSunsetList={sunriseAndSunsetList} />
+        {(weekWeatherData.length > 0 && hourWeatherData.length > 0)
+          ? (<>
+              <OverviewRecentWeather weekWeatherData={weekWeatherData} hourWeatherData={hourWeatherData} />
+              <WeatherForecast weekWeatherData={weekWeatherData} hourWeatherData={hourWeatherData} sunriseAndSunsetList={sunriseAndSunsetList} />
+            </>)
+          : <NoData />
+        }
       </Box>
     </>
   )

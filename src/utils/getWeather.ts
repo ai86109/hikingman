@@ -29,33 +29,35 @@ export const getPoP6hrOfTheDay = (PoP6hr: any) => {
 
 export const getWeekWeatherDetail = (data: any[], sunriseAndSunsetList: sunriseAndSunsetTime[]) => {
   const weekWeatherData: weekWeatherDataType[] = []
-  const dateString = data[0].time[0].startTime
-  for(let i = 0; i < 7; i++) {
-    const { month, date, day } = getDateInfo(dateString, i)
-    const weatherInfo: weekWeatherDataType = {
-      date: { month, date, day },
-      Wx: { 
-        text: data[12].time[i].elementValue[0].value,
-        index: data[12].time[i].elementValue[1].value
-      },
-      PoP: data[9].time[i].elementValue.value,
-      maxTemp: data[3].time[i].elementValue.value,
-      minTemp: data[4].time[i].elementValue.value,
-      maxBodyTemp: data[5].time[i].elementValue.value,
-      minBodyTemp: data[6].time[i].elementValue.value,
-      humidity: data[2].time[i].elementValue.value,
-      wind: {
-        direction: data[10].time[i].elementValue.value,
-        speed: data[11].time[i].elementValue[1].value //蒲福風級
-      },
-      maxComfortIdx: data[7].time[i].elementValue[0].value,
-      minComfortIdx: data[8].time[i].elementValue[0].value,
-      sunriseAndSunset: {
-        sunRiseTime: sunriseAndSunsetList[i].SunRiseTime,
-        sunSetTime: sunriseAndSunsetList[i].SunSetTime
+  if(data && data.length > 0) {
+    const dateString = data[0].time[0].startTime
+    for(let i = 0; i < 7; i++) {
+      const { month, date, day } = getDateInfo(dateString, i)
+      const weatherInfo: weekWeatherDataType = {
+        date: { month, date, day },
+        Wx: { 
+          text: data[12].time[i].elementValue[0].value,
+          index: data[12].time[i].elementValue[1].value
+        },
+        PoP: data[9].time[i].elementValue.value,
+        maxTemp: data[3].time[i].elementValue.value,
+        minTemp: data[4].time[i].elementValue.value,
+        maxBodyTemp: data[5].time[i].elementValue.value,
+        minBodyTemp: data[6].time[i].elementValue.value,
+        humidity: data[2].time[i].elementValue.value,
+        wind: {
+          direction: data[10].time[i].elementValue.value,
+          speed: data[11].time[i].elementValue[1].value //蒲福風級
+        },
+        maxComfortIdx: data[7].time[i].elementValue[0].value,
+        minComfortIdx: data[8].time[i].elementValue[0].value,
+        sunriseAndSunset: {
+          sunRiseTime: sunriseAndSunsetList[i]?.SunRiseTime || "",
+          sunSetTime: sunriseAndSunsetList[i]?.SunSetTime || ""
+        }
       }
+      weekWeatherData.push(weatherInfo)
     }
-    weekWeatherData.push(weatherInfo)
   }
 
   return weekWeatherData
