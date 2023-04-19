@@ -25,12 +25,12 @@ const CIBlock = ({
       {max !== min && 
         <>
           <Tooltip label={`${min}，${minIndex}`}>
-            <Image w="50px" src={require(`assets/icons/CI/${min}.png`)} />
+            <Image w="50px" src={require(`assets/icons/CI/${min}.svg`)} />
           </Tooltip>
           ～
         </>}
       <Tooltip label={`${max}，${maxIndex}`}>
-        <Image w="50px" src={require(`assets/icons/CI/${max}.png`)} />
+        <Image w="50px" src={require(`assets/icons/CI/${max}.svg`)} />
       </Tooltip>
     </Flex>
   )
