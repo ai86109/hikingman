@@ -8,6 +8,7 @@ import { getWxName } from 'utils/getWeather'
 import { convertCelsiusToFahrenheit } from 'utils/unitCalculate'
 import { getSearchedList } from 'utils/search'
 import { getTime } from 'utils/getDate'
+import NoData from 'components/NoData'
 
 export default function Lists({ 
   data,
@@ -22,7 +23,7 @@ export default function Lists({
 
   return (
     <>
-      {list.length > 0 &&
+      {list.length > 0 ?
         list.map((mountain: WeatherDataType) => {
           const hour = getTime(mountain.hourWeatherData[9].time[0].startTime)
           const isDayTime = hour >= 6 && hour < 18
@@ -67,7 +68,7 @@ export default function Lists({
                 </CardFooter>
               </Stack>
             </Card>)
-        })
+        }) : <NoData />
       }
     </>
   )

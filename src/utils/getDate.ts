@@ -1,5 +1,5 @@
 const options = { timeZone: 'Asia/Taipei' }
-const today = new Date().toLocaleString('en-US', options)
+export const today = new Date().toLocaleString('en-US', options)
 
 const getMonth = (date: Date) => date.getMonth() + 1
 const getDate = (date: Date) => date.getDate()
@@ -27,4 +27,8 @@ export const getWeekDateFromToday = () => {
 
 export const getCurrentHour = () => {
   return new Date(today).getHours()
+}
+
+export const isSameDate = (date1: string, date2: string) => {
+  return new Date(date1).toDateString() === new Date(date2).toDateString()
 }

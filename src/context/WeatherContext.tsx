@@ -1,9 +1,9 @@
 import { createContext, ReactNode } from "react";
 import { useQuery } from 'react-query'
-import { getWeekWeather, getHourWeather, getWeekWeatherTW, getHourWeatherTW, getSunrise } from 'utils/fetchers/getWeather'
+import { getWeekWeather, getHourWeather, getSunrise } from 'utils/fetchers/getWeather'
 import { WeatherMapType, BasicInfoType, sunriseListType, sunriseAndSunsetType } from "types/WeatherDataType";
 import { twCounty } from "data/constant";
-import { Box, Skeleton, Spinner, Stack } from "@chakra-ui/react";
+import { Flex, Skeleton, Spinner, Stack, Text } from "@chakra-ui/react";
 
 interface WeatherContextProps {
   weatherMap: WeatherMapType,
@@ -20,9 +20,9 @@ const WeatherContext = createContext<WeatherContextProps>({
 })
 
 const WeatherContextProvider = ({ children }: WeatherContextProviderProps) => {
-  const { data: weekWeather, isLoading: weekWeatherIsLoading, isError: weekWeatherIsError } = useQuery<any>(['week'], getWeekWeather, {staleTime: 600000})
-  const { data: hourWeather, isLoading: hourWeatherIsLoading, isError: hourWeatherIsError } = useQuery<any>(['hour'], getHourWeather, {staleTime: 600000})
-  const { data: sunrise, isLoading: sunriseIsLoading, isError: sunriseIsError } = useQuery(['sunrise'], getSunrise, {staleTime: 600000})
+  const { data: weekWeather, isLoading: weekWeatherIsLoading, isError: weekWeatherIsError } = useQuery<any>(['week'], getWeekWeather, {staleTime: 600000, cacheTime: 600000, refetchOnWindowFocus: false})
+  const { data: hourWeather, isLoading: hourWeatherIsLoading, isError: hourWeatherIsError } = useQuery<any>(['hour'], getHourWeather, {staleTime: 600000, cacheTime: 600000, refetchOnWindowFocus: false})
+  const { data: sunrise, isLoading: sunriseIsLoading, isError: sunriseIsError } = useQuery(['sunrise'], getSunrise, {staleTime: 600000, cacheTime: 600000, refetchOnWindowFocus: false})
   // const { data: weekWeatherTW, isLoading: weekWeatherIsLoadingTW, isError: weekWeatherIsErrorTW } = useQuery<any>(['weekTW'], getWeekWeatherTW, {staleTime: 60000})
   // const { data: hourWeatherTW, isLoading: hourWeatherIsLoadingTW, isError: hourWeatherIsErrorTW } = useQuery<any>(['hourTW'], getHourWeatherTW, {staleTime: 60000})
   // if(!weekWeatherIsLoadingTW && !weekWeatherIsErrorTW) console.log("weekWeatherTW", weekWeatherTW)
@@ -46,10 +46,17 @@ const WeatherContextProvider = ({ children }: WeatherContextProviderProps) => {
     )
   }
 
-  if(weekWeatherIsError || hourWeatherIsError || sunriseIsError) return <Box>Something went wrong...</Box>
+  if(weekWeatherIsError && hourWeatherIsError && sunriseIsError) {
+    return (
+      <Flex justifyContent="center" h="100vh" alignItems="center" direction="column" bg="green">
+        <Text as="b" fontSize={28}>Something went wrong ...</Text>
+        <Text fontSize={20}>Please reload later</Text>
+      </Flex>
+    )
+  }
 
   const weatherMap = new Map()
-  if(weekWeather?.length > 0 && hourWeather?.length > 0) {
+  if(!weekWeatherIsError && !hourWeatherIsError && weekWeather?.length > 0 && hourWeather?.length > 0) {
     for(let data of weekWeather) {
       const id: string = data.parameterSet.parameter.parameterValue
       const basicInfo: BasicInfoType = {
@@ -82,10 +89,14 @@ const WeatherContextProvider = ({ children }: WeatherContextProviderProps) => {
     //   console.log("res", res.reduce((acc, [key, value]) => ({ ...acc, [key]: value}), {}))
     // }
   }
-  const sunriseAndSunset: sunriseAndSunsetType = sunrise.reduce((acc: sunriseAndSunsetType, { CountyName, time }: sunriseListType) => {
-    acc[twCounty[CountyName]] = time
-    return acc;
-  }, {});
+
+  let sunriseAndSunset: sunriseAndSunsetType = {}
+  if(!sunriseIsError && Object.keys(sunrise).length > 0) {
+    sunriseAndSunset = sunrise.reduce((acc: sunriseAndSunsetType, { CountyName, time }: sunriseListType) => {
+      acc[twCounty[CountyName]] = time
+      return acc;
+    }, {});
+  }
 
   return (
     <WeatherContext.Provider value={{ weatherMap, sunriseAndSunset }}>
