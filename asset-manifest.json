@@ -1,13 +1,7 @@
 {
   "files": {
-    "main.js": "/hikingman/static/js/main.efcc9419.js",
+    "main.js": "/hikingman/static/js/main.3e2cc206.js",
     "static/js/787.3e252116.chunk.js": "/hikingman/static/js/787.3e252116.chunk.js",
-    "static/media/veryHot.png": "/hikingman/static/media/veryHot.aafc0f4a9a050bb06fef.png",
-    "static/media/hot.png": "/hikingman/static/media/hot.1ea9eb4141cb231bfe65.png",
-    "static/media/cold.png": "/hikingman/static/media/cold.010eeb13c0c834426c31.png",
-    "static/media/cozy.png": "/hikingman/static/media/cozy.10222f5cfb464c6bf6ca.png",
-    "static/media/veryCold.png": "/hikingman/static/media/veryCold.c85b024aeb4b2a01e591.png",
-    "static/media/slightCold.png": "/hikingman/static/media/slightCold.03eec32af74e75ece759.png",
     "static/media/windDirection.png": "/hikingman/static/media/windDirection.033b44132991f2717a79.png",
     "static/media/wx_day_37.svg": "/hikingman/static/media/wx_day_37.53854d4ad96ae61ff070.svg",
     "static/media/wx_night_37.svg": "/hikingman/static/media/wx_night_37.53854d4ad96ae61ff070.svg",
@@ -18,13 +12,16 @@
     "static/media/wx_day_26.svg": "/hikingman/static/media/wx_day_26.8c4fb450a8780e4e7821.svg",
     "static/media/wx_day_25.svg": "/hikingman/static/media/wx_day_25.52c7f0f60b703e6fd796.svg",
     "static/media/wx_day_27.svg": "/hikingman/static/media/wx_day_27.b2a3cd0e0075027e15fc.svg",
+    "static/media/hot.svg": "/hikingman/static/media/hot.2d3cabdff2e3a31b9c91.svg",
     "static/media/wx_night_31.svg": "/hikingman/static/media/wx_night_31.a19bc79f838d22e0c180.svg",
     "static/media/wx_night_35.svg": "/hikingman/static/media/wx_night_35.2ea85c43919af68b263e.svg",
     "static/media/wx_day_41.svg": "/hikingman/static/media/wx_day_41.a3b0432c7a39f2cb0fe5.svg",
     "static/media/wx_night_41.svg": "/hikingman/static/media/wx_night_41.a3b0432c7a39f2cb0fe5.svg",
     "static/media/wx_day_24.svg": "/hikingman/static/media/wx_day_24.2f3c449a90eee05aed94.svg",
+    "static/media/veryCold.svg": "/hikingman/static/media/veryCold.f4969aa3a71498cfd2e4.svg",
     "static/media/wx_day_39.svg": "/hikingman/static/media/wx_day_39.a095bf39cbb8615dfd54.svg",
     "static/media/wx_night_39.svg": "/hikingman/static/media/wx_night_39.a095bf39cbb8615dfd54.svg",
+    "static/media/veryHot.svg": "/hikingman/static/media/veryHot.4d07c368d109dbe643bf.svg",
     "static/media/wx_day_22.svg": "/hikingman/static/media/wx_day_22.8c0933e71e58f52d614a.svg",
     "static/media/wx_night_25.svg": "/hikingman/static/media/wx_night_25.afbf3683a22b251bc41c.svg",
     "static/media/wx_night_26.svg": "/hikingman/static/media/wx_night_26.41f10c5b2b4de8796199.svg",
@@ -41,6 +38,7 @@
     "static/media/wx_day_42.svg": "/hikingman/static/media/wx_day_42.0537ca5a49092ed14f5d.svg",
     "static/media/wx_night_42.svg": "/hikingman/static/media/wx_night_42.0537ca5a49092ed14f5d.svg",
     "static/media/wx_day_33.svg": "/hikingman/static/media/wx_day_33.0e5581bb26017c94508a.svg",
+    "static/media/cold.svg": "/hikingman/static/media/cold.3333eecfb6dd13a1bf6c.svg",
     "static/media/wx_day_29.svg": "/hikingman/static/media/wx_day_29.8f8bceb05c542fa6129b.svg",
     "static/media/wx_day_28.svg": "/hikingman/static/media/wx_day_28.99c33fb0198dcc2bcc14.svg",
     "static/media/wx_night_28.svg": "/hikingman/static/media/wx_night_28.99c33fb0198dcc2bcc14.svg",
@@ -50,8 +48,10 @@
     "static/media/wx_day_04.svg": "/hikingman/static/media/wx_day_04.b9b9b23976b7fac0056a.svg",
     "static/media/wx_night_22.svg": "/hikingman/static/media/wx_night_22.2a03636aeb87bd2a7240.svg",
     "static/media/wx_night_20.svg": "/hikingman/static/media/wx_night_20.94d48d5b392d3dbbc99e.svg",
+    "static/media/slightCold.svg": "/hikingman/static/media/slightCold.ab3419a26c9ef58924d5.svg",
     "static/media/wx_day_01.svg": "/hikingman/static/media/wx_day_01.92aa30ad81486fcbd595.svg",
     "static/media/wx_night_21.svg": "/hikingman/static/media/wx_night_21.dd4b26079de92f91a35b.svg",
+    "static/media/cozy.svg": "/hikingman/static/media/cozy.77e39b3f39798379045e.svg",
     "static/media/wx_day_17.svg": "/hikingman/static/media/wx_day_17.b32b7f9f83f3f97dce57.svg",
     "static/media/wx_night_17.svg": "/hikingman/static/media/wx_night_17.b32b7f9f83f3f97dce57.svg",
     "static/media/wx_night_19.svg": "/hikingman/static/media/wx_night_19.2b450a8faa8c8f987e5a.svg",
@@ -93,10 +93,10 @@
     "static/media/wx_night_01.svg": "/hikingman/static/media/wx_night_01.0dc7c1c1e65fcad29281.svg",
     "index.html": "/hikingman/index.html",
     "static/media/getFetch.cjs": "/hikingman/static/media/getFetch.40f37ddea2378391108f.cjs",
-    "main.efcc9419.js.map": "/hikingman/static/js/main.efcc9419.js.map",
+    "main.3e2cc206.js.map": "/hikingman/static/js/main.3e2cc206.js.map",
     "787.3e252116.chunk.js.map": "/hikingman/static/js/787.3e252116.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.efcc9419.js"
+    "static/js/main.3e2cc206.js"
   ]
 }
