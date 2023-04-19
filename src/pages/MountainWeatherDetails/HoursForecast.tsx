@@ -14,7 +14,7 @@ const CIBlock = ({index}: {index: number}) => {
 
   return (
     <Tooltip label={`${CI}，${index}`}>
-      <Image w="60px" src={require(`assets/icons/CI/${CI}.png`)} />
+      <Image w="60px" src={require(`assets/icons/CI/${CI}.svg`)} />
     </Tooltip>
   )
 }
@@ -162,6 +162,7 @@ export default function HoursForecast({
       <SelectButtons
         tabs={hourTabs}
         icons={hourTabsIcon}
+        selectedType={selectedType}
         setSelectedType={setSelectedType} 
       />
       <TableBlock data={data} t={t} table={selectedType} />

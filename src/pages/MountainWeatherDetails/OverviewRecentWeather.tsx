@@ -3,11 +3,9 @@ import { TemperatureContext } from "context/TemperatureContext";
 import { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { TFunction } from "i18next";
-import { getDateInfo, getTime } from "utils/getDate";
+import { getDateInfo, getTime, isSameDate, today } from "utils/getDate";
 import { getWxName, getPoP6hrOfTheDay } from "utils/getWeather";
 import { convertCelsiusToFahrenheit } from 'utils/unitCalculate'
-
-type TimeType = 'today' | 'tomorrow'
 
 const TempBlock = ({ 
   isCelsius,
@@ -41,28 +39,39 @@ const TempBlock = ({
 }
 
 const RecentWeatherBlock = ({ 
-  time, 
+  relativeOfToday, 
   weekWeatherData,
   PoP
 } : { 
-  time: TimeType,
+  relativeOfToday: number,
   weekWeatherData: any[],
   PoP: string[][]
 }) => {
   const { isCelsius } = useContext(TemperatureContext)
   const { t } = useTranslation()
-  const { month, date, day } = time === 'today' ? getDateInfo() : getDateInfo(undefined, 1)
-  const weather = time === 'today' ? weekWeatherData[12].time[0] : weekWeatherData[12].time[1]
-  const maxTemp = time === 'today' ? weekWeatherData[3].time[0].elementValue.value : weekWeatherData[3].time[1].elementValue.value
-  const minTemp = time === 'today' ? weekWeatherData[4].time[0].elementValue.value : weekWeatherData[4].time[1].elementValue.value
-  const PoP6hr = time === 'today' ? PoP[0] : PoP[1]
+  let targetDate = new Date(today)
+  targetDate.setDate(targetDate.getDate() + relativeOfToday)
+
+  const { month, date, day } = getDateInfo(targetDate.toDateString())
+  let weather, maxTemp, minTemp, PoP6hr
+  [weather, maxTemp, minTemp, PoP6hr] = ["--", "--", "--", ["--", "--", "--", "--"]]
+
+  for(let i = 0; i < weekWeatherData[3].time.length; i++) {
+    if(isSameDate(targetDate.toDateString(), weekWeatherData[3].time[i].startTime)) {
+      weather = weekWeatherData[12].time[i]
+      maxTemp = weekWeatherData[3].time[i].elementValue.value
+      minTemp = weekWeatherData[4].time[i].elementValue.value
+      PoP6hr = PoP[i]
+    }
+  }
+
   const hour = getTime(weather.startTime)
   const isDayTime = hour >= 6 && hour < 18
 
   return (
     <Flex direction={{ base: "row" }} justify={{ base: "space-between" }}>
       <Flex direction={{ base: "column" }} alignItems={{ base: "center" }} w="150px">
-        <Text fontSize="md" as="b">{t(`time.${time}`)}</Text>
+        <Text fontSize="md" as="b">{t(`time.${relativeOfToday === 0 ? "today" : "tomorrow"}`)}</Text>
         <Text fontSize="md" as="b">
           {month}/{date}
           ({t(`time.daysOfTheWeek.${day}`)})
@@ -129,9 +138,9 @@ export default function OverviewRecentWeather({
 
   return (
     <Box bg="white" borderRadius={10} pr={3} py={8} mt={4}>
-      <RecentWeatherBlock time="today" weekWeatherData={weekWeatherData} PoP={PoP6hr} />
+      <RecentWeatherBlock relativeOfToday={0} weekWeatherData={weekWeatherData} PoP={PoP6hr} />
       <Divider orientation='horizontal' m={[5, 0]} w="unset" />
-      <RecentWeatherBlock time="tomorrow" weekWeatherData={weekWeatherData} PoP={PoP6hr} />
+      <RecentWeatherBlock relativeOfToday={1} weekWeatherData={weekWeatherData} PoP={PoP6hr} />
     </Box>
   )
 }
