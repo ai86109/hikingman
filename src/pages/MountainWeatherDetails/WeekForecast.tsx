@@ -22,7 +22,7 @@ const CIBlock = ({
   const min = getCIindex(minIndex)
 
   return (
-    <Flex alignItems="center">
+    <Flex alignItems="center" justifyContent="center">
       {max !== min && 
         <>
           <Tooltip label={`${min}，${minIndex}`}>
@@ -80,7 +80,7 @@ const TableBlock = ({
             data.map((datum) => (
               <Tr key={`${table}-${datum.date.day}`}>
                 <Td>
-                  <Box display="flex" flexDirection="row">
+                  <Box display="flex" flexDirection="row" justifyContent="center">
                     {datum.date.month}/{datum.date.date}
                     <Text as="b" fontSize="12px" ml="2px">({t(`time.daysOfTheWeek.${datum.date.day}`)})</Text>
                   </Box>
@@ -121,7 +121,7 @@ const TableBlock = ({
             data.map((datum) => (
               <Tr key={`${table}-${datum.date.day}`}>
                 <Td px={3}>
-                  <Box display="flex" flexDirection="row">
+                  <Box display="flex" flexDirection="row" justifyContent="center">
                     {datum.date.month}/{datum.date.date}
                     <Text as="b" fontSize="12px" ml="2px">({t(`time.daysOfTheWeek.${datum.date.day}`)})</Text>
                   </Box>
@@ -170,7 +170,7 @@ const TableBlock = ({
             data.map((datum) => (
               <Tr key={`${table}-${datum.date.day}`}>
                 <Td>
-                  <Box display="flex" flexDirection="row">
+                  <Box display="flex" flexDirection="row" justifyContent="center">
                     {datum.date.month}/{datum.date.date}
                     <Text as="b" fontSize="12px" ml="2px">({t(`time.daysOfTheWeek.${datum.date.day}`)})</Text>
                   </Box>

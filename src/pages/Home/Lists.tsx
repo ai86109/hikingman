@@ -35,7 +35,6 @@ export default function Lists({
               alignItems={{ base: 'center' }}
               justifyContent={{ base: 'space-between' }}
               overflow='hidden'
-              cursor='pointer'
             >
               <Heading size='md' pl={4} w={{ base: '150px' }}>
                 {t(`locationName.${mountain.basicInfo.locationName}`)}

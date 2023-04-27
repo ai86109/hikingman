@@ -17,7 +17,7 @@ export default function Header() {
   return (
     <Flex bg="green" p={2} justifyContent="flex-end" alignItems="center">
       <Switch colorScheme='teal' isChecked={isCelsius} onChange={toggleTemperature} mr={4} />
-      <Box onClick={handleChange}>
+      <Box onClick={handleChange} cursor="pointer">
         {i18n.language === 'en' ? '中文' : "EN"}
       </Box>
     </Flex>

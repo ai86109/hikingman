@@ -31,6 +31,7 @@ export default function ButtonsGroup({
           flexDirection="column"
           alignItems="center"
           opacity={tab === selectedType ? "1" : "0.5"}
+          cursor="pointer"
         >
           <Image 
             src={icons[tab]}
