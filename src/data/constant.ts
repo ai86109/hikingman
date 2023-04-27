@@ -26,6 +26,11 @@ export const hourTabs: subTabsType = {
   "table3": ["bodyTemp", "comfortIndex"]
 }
 
+export const searchTabs: subTabsType = {
+  "name": ["searchByName"],
+  "cate": ["searchByCate"],
+}
+
 export const weekTabsIcon: tabsIconType = {
   "table1": "https://1.bp.blogspot.com/-aL7kYiiQLsQ/Wp94LnyOJ1I/AAAAAAABKrc/8GoMzMIipwkffwR6uyieCobTimT4W2pKwCLcBGAs/s400/machine_ondo_shitsudokei.png",
   "table2": "https://1.bp.blogspot.com/-GSOdiltwLdE/YHOSs5Nn5bI/AAAAAAABdoY/WHKSUwHeKfEXEV9YG8wkYtYyJsYqPp_1gCNcBGAsYHQ/s180-c/nature_kaze.png",
@@ -36,6 +41,11 @@ export const hourTabsIcon: tabsIconType = {
   "table1": "https://1.bp.blogspot.com/-aL7kYiiQLsQ/Wp94LnyOJ1I/AAAAAAABKrc/8GoMzMIipwkffwR6uyieCobTimT4W2pKwCLcBGAs/s400/machine_ondo_shitsudokei.png",
   "table2": "https://1.bp.blogspot.com/-GSOdiltwLdE/YHOSs5Nn5bI/AAAAAAABdoY/WHKSUwHeKfEXEV9YG8wkYtYyJsYqPp_1gCNcBGAsYHQ/s180-c/nature_kaze.png",
   "table3": "https://2.bp.blogspot.com/-3tqOSBlyens/UsZtKFlgtRI/AAAAAAAAcyY/GtGKv2OEDIU/s400/kids_hashirimawaru_snow.png"
+}
+
+export const searchTabsIcon: tabsIconType = {
+  "name": "http://1.bp.blogspot.com/-gARR6ehVBP8/UZB6YR-tXBI/AAAAAAAASCo/fZGPc8JEd6w/s180-c/search_mushimegane.png",
+  "cate": "https://1.bp.blogspot.com/-r7LqBL2a1GA/XaKa2g3kWXI/AAAAAAABVjY/tryXn3QOacc1U9WGpKPjsggNRsIyUEhHwCNcBGAsYHQ/s400/document_list.png",
 }
 
 export const badgeColor: badgeColorType = {

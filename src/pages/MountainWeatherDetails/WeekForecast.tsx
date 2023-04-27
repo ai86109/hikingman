@@ -5,7 +5,7 @@ import { getCIindex, getWeekWeatherDetail, getWxName } from "utils/getWeather";
 import { convertCelsiusToFahrenheit } from 'utils/unitCalculate'
 import { sunriseAndSunsetTime, weekWeatherDataType } from "types/WeatherDataType"
 import { TFunction } from "i18next";
-import SelectButtons from "components/SelectButtons";
+import ButtonsGroup from "components/ButtonsGroup";
 import { weekTabs, weekTabsIcon, windDirection } from "data/constant";
 import { TemperatureContext } from "context/TemperatureContext";
 import { getCurrentHour } from "utils/getDate";
@@ -206,7 +206,7 @@ export default function WeekForecast({
 
   return (
     <>
-      <SelectButtons 
+      <ButtonsGroup 
         tabs={weekTabs}
         icons={weekTabsIcon}
         selectedType={selectedType}

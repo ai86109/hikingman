@@ -3,7 +3,7 @@ import { TemperatureContext } from 'context/TemperatureContext';
 import i18n from 'i18n';
 import { useContext } from 'react';
 
-export default function Layouts() {
+export default function Header() {
   const { isCelsius, toggleTemperature } = useContext(TemperatureContext)
 
   const handleChange = () => {

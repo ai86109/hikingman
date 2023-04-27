@@ -23,7 +23,7 @@ const TempBlock = ({
   return (
     <Box bg={mainBg} w={110} borderRadius={10} textAlign="center" borderWidth={2} borderColor={mainBg}>
       <Text as="b" color="white">
-        {isMax ? t(`overviewRecentWeather.max`) : t(`overviewRecentWeather.min`)}
+        {isMax ? t(`currentWeather.max`) : t(`currentWeather.min`)}
       </Text>
       <Box bg="white" color={mainBg} borderBottomRadius={8}>
         <Text as="b">
@@ -38,7 +38,7 @@ const TempBlock = ({
   )
 }
 
-const RecentWeatherBlock = ({ 
+const WeatherOverview = ({ 
   relativeOfToday, 
   weekWeatherData,
   PoP
@@ -64,6 +64,8 @@ const RecentWeatherBlock = ({
       PoP6hr = PoP[i]
     }
   }
+  console.log("weekWeatherData", weekWeatherData, "PoP", PoP)
+  // console.log("weather",targetDate, weather)
 
   const hour = getTime(weather.startTime)
   const isDayTime = hour >= 6 && hour < 18
@@ -77,15 +79,21 @@ const RecentWeatherBlock = ({
           ({t(`time.daysOfTheWeek.${day}`)})
         </Text>
         <Flex direction={{ base: "column" }} alignItems={{ base: "center" }} mt={4}>
-          <Tooltip label={t(`Wx.${getWxName(weather.elementValue[0].value)}`)}>
-            <Image 
-              src={require(`assets/icons/Wx/wx_${isDayTime ? "day" : "night"}_${weather.elementValue[1].value}.svg`)} 
-              alt={t(`Wx.${getWxName(weather.elementValue[0].value)}`) || "--"}
-              boxSize="54px"
-              objectFit={'contain'}
-            />
-          </Tooltip>
-          <Text fontSize="sm" as="b" textAlign={'center'}>{t(`Wx.${getWxName(weather.elementValue[0].value)}`)}</Text>
+          {weather !== '--' && (
+          <>
+            <Tooltip label=
+            {t(`Wx.${getWxName(weather.elementValue[0].value)}`)}>
+              <Image 
+                src={require(`assets/icons/Wx/wx_${isDayTime ? "day" : "night"}_${weather.elementValue[1].value}.svg`)} 
+                alt={t(`Wx.${getWxName(weather.elementValue[0].value)}`) || "--"}
+                boxSize="54px"
+                objectFit={'contain'}
+              />
+            </Tooltip>
+            <Text fontSize="sm" as="b" textAlign={'center'}>
+              {t(`Wx.${getWxName(weather.elementValue[0].value)}`)}
+            </Text>
+          </>)}
         </Flex>
       </Flex>
       <Box w="250px">
@@ -107,14 +115,14 @@ const RecentWeatherBlock = ({
           mt={4}
         >
           <GridItem w="100%" h="10" bg="gray.100" lineHeight="3em">
-            {t('overviewRecentWeather.time')}
+            {t('currentWeather.time')}
           </GridItem>
           <GridItem w="100%" h="10" bg="gray.100" lineHeight="3em">0-6</GridItem>
           <GridItem w="100%" h="10" bg="gray.100" lineHeight="3em">6-12</GridItem>
           <GridItem w="100%" h="10" bg="gray.100" lineHeight="3em">12-18</GridItem>
           <GridItem w="100%" h="10" bg="gray.100" lineHeight="3em">18-24</GridItem>
           <GridItem w="100%" h="10" bg="gray.100" lineHeight="3em">
-            {t('overviewRecentWeather.PoP')}
+            {t('currentWeather.PoP')}
           </GridItem>
           {PoP6hr.map((value, index) => (
             <GridItem key={index} w="100%" h="10" bg="white" lineHeight="3em">
@@ -127,7 +135,7 @@ const RecentWeatherBlock = ({
   )
 }
 
-export default function OverviewRecentWeather({ 
+export default function CurrentWeather({ 
   weekWeatherData,
   hourWeatherData
 }: {
@@ -138,9 +146,9 @@ export default function OverviewRecentWeather({
 
   return (
     <Box bg="white" borderRadius={10} pr={3} py={8} mt={4}>
-      <RecentWeatherBlock relativeOfToday={0} weekWeatherData={weekWeatherData} PoP={PoP6hr} />
+      <WeatherOverview relativeOfToday={0} weekWeatherData={weekWeatherData} PoP={PoP6hr} />
       <Divider orientation='horizontal' m={[5, 0]} w="unset" />
-      <RecentWeatherBlock relativeOfToday={1} weekWeatherData={weekWeatherData} PoP={PoP6hr} />
+      <WeatherOverview relativeOfToday={1} weekWeatherData={weekWeatherData} PoP={PoP6hr} />
     </Box>
   )
 }
