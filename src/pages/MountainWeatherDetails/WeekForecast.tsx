@@ -47,8 +47,6 @@ const TableBlock = ({
   table: string
 }) => {
   const { isCelsius } = useContext(TemperatureContext)
-  const hour = getCurrentHour()
-  const isDayTime = hour >= 6 && hour < 18
 
   return (
     <TableContainer bg="white" borderRadius={10}>
@@ -88,7 +86,7 @@ const TableBlock = ({
                 <Td display={"flex"} flexDirection={"row"} bg="white" alignItems="center">
                   <Tooltip label={t(`Wx.${getWxName(datum.Wx.text)}`)}>
                     <Image 
-                      src={require(`assets/icons/Wx/wx_${isDayTime ? "day" : "night"}_${datum.Wx.index}.svg`)} 
+                      src={require(`assets/icons/Wx/wx_day_${datum.Wx.index}.svg`)} 
                       alt={t(`Wx.${getWxName(datum.Wx.text)}`) || "--"}
                       boxSize="40px"
                       objectFit={'contain'}
