@@ -1,7 +1,7 @@
 import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react"
 import { Search2Icon } from '@chakra-ui/icons'
 
-export default function Search({ 
+export default function SearchBar({ 
   placeholder,
   inputVal, 
   handleChange

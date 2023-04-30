@@ -1,5 +1,5 @@
 import { Box, Image, TableContainer, Table, Thead, Tr, Th, Tbody, Td, Text, Tooltip, Flex } from "@chakra-ui/react";
-import SelectButtons from "components/SelectButtons";
+import ButtonsGroup from "components/ButtonsGroup";
 import { Fragment, useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getCIindex, getHourWeatherDetail, getWxName } from "utils/getWeather";
@@ -159,7 +159,7 @@ export default function HoursForecast({
 
   return (
     <>
-      <SelectButtons
+      <ButtonsGroup
         tabs={hourTabs}
         icons={hourTabsIcon}
         selectedType={selectedType}

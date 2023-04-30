@@ -1,16 +1,16 @@
 import { Route, Routes } from 'react-router-dom';
-import Layouts from 'components/Layouts';
+import { Box } from '@chakra-ui/react';
+import Header from 'components/Header';
 import Home from 'pages/Home';
 import MountainWeatherDetails from './pages/MountainWeatherDetails'
-import { Box } from '@chakra-ui/react';
 
 function App() {
   return (
     <Box className="App" maxW="500px" mx="auto">
-      <Layouts />
+      <Header />
       <Routes>
-        <Route path='/hikingman/' element={<Home />} />
-        <Route path='/hikingman/:mountainId' element={<MountainWeatherDetails />} />
+        <Route path='/' element={<Home />} />
+        <Route path='/:mountainId' element={<MountainWeatherDetails />} />
       </Routes>
     </Box>
   );

@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { useParams, useNavigate } from "react-router-dom";
-import MtHeader from "./MtHeader";
-import OverviewRecentWeather from "./OverviewRecentWeather";
+import Info from "./Info";
+import CurrentWeather from "./CurrentWeather";
 import WeatherForecast from "./WeatherForecast";
 import { useContext, useEffect } from 'react'
 import { WeatherContext } from 'context/WeatherContext'
@@ -24,8 +24,30 @@ export default function MountainWeatherDetails() {
   const { weekWeatherData = [], hourWeatherData = [] } = weatherMap.size > 0 ? weatherMap.get(id) as WeatherDataType : {}
   const sunriseAndSunsetList = Object.keys(sunriseAndSunset).length > 0 ? sunriseAndSunset[mtInfo.county[0]] : []
 
+  // interface DifficultyData {
+  //   [key: string]: string[]
+  // }
+  
+  // const obj: DifficultyData = {}
+  // Object.keys(data).map((key: string) => {
+  //   const county = (data as any)[key].county
+  //   for(let c of county) {
+  //     if(Object.prototype.hasOwnProperty.call(obj, c)) obj[c].push(key)
+  //     else obj[c] = [key]
+  //   }
+  //   // if(Object.prototype.hasOwnProperty.call(obj, cate)) obj[park].push(key)
+  //   // else obj[park] = [key]
+  // })
+  // Object.keys(obj).map((key: string) => {
+  //   // obj[key] = (obj[key][1] as [string, number][]).sort((a, b) => b - a)
+  //   obj[key] = obj[key].sort((a, b) => {
+  //     return b[1] - a[1]
+  //   })
+  // })
+  // console.log("data", obj)
+
   useEffect(() => {
-    navigate(`/hikingman/${id}`, { replace: true })
+    navigate(`/${id}`, { replace: true })
   }, [id, navigate])
 
   return (
@@ -39,10 +61,10 @@ export default function MountainWeatherDetails() {
         p={3}
         mt={6}
       >
-        <MtHeader mtInfo={mtInfo} />
+        <Info mtInfo={mtInfo} />
         {(weekWeatherData.length > 0 && hourWeatherData.length > 0)
           ? (<>
-              <OverviewRecentWeather weekWeatherData={weekWeatherData} hourWeatherData={hourWeatherData} />
+              <CurrentWeather weekWeatherData={weekWeatherData} hourWeatherData={hourWeatherData} />
               <WeatherForecast weekWeatherData={weekWeatherData} hourWeatherData={hourWeatherData} sunriseAndSunsetList={sunriseAndSunsetList} />
             </>)
           : <NoData />

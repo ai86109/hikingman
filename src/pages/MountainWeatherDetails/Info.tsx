@@ -5,7 +5,7 @@ import { convertMeterToFeet } from "utils/unitCalculate"
 import { MtInfoType } from "types/MtInfoType";
 import { badgeColor } from "data/constant";
 
-export default function MtHeader({ 
+export default function Info({ 
   mtInfo
 }: {
   mtInfo: MtInfoType
