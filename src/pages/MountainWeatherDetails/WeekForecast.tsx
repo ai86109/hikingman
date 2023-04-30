@@ -8,7 +8,6 @@ import { TFunction } from "i18next";
 import ButtonsGroup from "components/ButtonsGroup";
 import { weekTabs, weekTabsIcon, windDirection } from "data/constant";
 import { TemperatureContext } from "context/TemperatureContext";
-import { getCurrentHour } from "utils/getDate";
 import NoData from "components/NoData";
 
 const CIBlock = ({
