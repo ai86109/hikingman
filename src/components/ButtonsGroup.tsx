@@ -2,7 +2,7 @@ import { Flex, Box, Image } from "@chakra-ui/react"
 import { Dispatch, SetStateAction } from "react"
 import { useTranslation } from "react-i18next"
 
-export default function SelectButtons({
+export default function ButtonsGroup({
   tabs,
   icons,
   selectedType,
@@ -31,6 +31,7 @@ export default function SelectButtons({
           flexDirection="column"
           alignItems="center"
           opacity={tab === selectedType ? "1" : "0.5"}
+          cursor="pointer"
         >
           <Image 
             src={icons[tab]}
@@ -40,7 +41,7 @@ export default function SelectButtons({
           {tabs[tab].map((item) => t(item)).join(' / ')}
         </Flex>
       ))}
-      <Box bg="transparent" w="45%" padding={5} borderRadius={10} mb={4}></Box>
+      <Box bg="transparent" w="45%" borderRadius={10} mb={4}></Box>
     </Flex>
   )
 }

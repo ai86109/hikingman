@@ -3,7 +3,7 @@ import { TemperatureContext } from 'context/TemperatureContext';
 import i18n from 'i18n';
 import { useContext } from 'react';
 
-export default function Layouts() {
+export default function Header() {
   const { isCelsius, toggleTemperature } = useContext(TemperatureContext)
 
   const handleChange = () => {
@@ -17,7 +17,7 @@ export default function Layouts() {
   return (
     <Flex bg="green" p={2} justifyContent="flex-end" alignItems="center">
       <Switch colorScheme='teal' isChecked={isCelsius} onChange={toggleTemperature} mr={4} />
-      <Box onClick={handleChange}>
+      <Box onClick={handleChange} cursor="pointer">
         {i18n.language === 'en' ? '中文' : "EN"}
       </Box>
     </Flex>

@@ -21,7 +21,7 @@ root.render(
       <QueryClientProvider client={queryClient}>
         <WeatherContextProvider>
           <TemperatureContextProvider>
-            <BrowserRouter>
+            <BrowserRouter basename='/hikingman'>
               <App />
             </BrowserRouter>
           </TemperatureContextProvider>

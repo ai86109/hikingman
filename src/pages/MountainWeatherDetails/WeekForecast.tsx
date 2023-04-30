@@ -5,10 +5,9 @@ import { getCIindex, getWeekWeatherDetail, getWxName } from "utils/getWeather";
 import { convertCelsiusToFahrenheit } from 'utils/unitCalculate'
 import { sunriseAndSunsetTime, weekWeatherDataType } from "types/WeatherDataType"
 import { TFunction } from "i18next";
-import SelectButtons from "components/SelectButtons";
+import ButtonsGroup from "components/ButtonsGroup";
 import { weekTabs, weekTabsIcon, windDirection } from "data/constant";
 import { TemperatureContext } from "context/TemperatureContext";
-import { getCurrentHour } from "utils/getDate";
 import NoData from "components/NoData";
 
 const CIBlock = ({
@@ -22,7 +21,7 @@ const CIBlock = ({
   const min = getCIindex(minIndex)
 
   return (
-    <Flex alignItems="center">
+    <Flex alignItems="center" justifyContent="center">
       {max !== min && 
         <>
           <Tooltip label={`${min}，${minIndex}`}>
@@ -47,8 +46,6 @@ const TableBlock = ({
   table: string
 }) => {
   const { isCelsius } = useContext(TemperatureContext)
-  const hour = getCurrentHour()
-  const isDayTime = hour >= 6 && hour < 18
 
   return (
     <TableContainer bg="white" borderRadius={10}>
@@ -80,7 +77,7 @@ const TableBlock = ({
             data.map((datum) => (
               <Tr key={`${table}-${datum.date.day}`}>
                 <Td>
-                  <Box display="flex" flexDirection="row">
+                  <Box display="flex" flexDirection="row" justifyContent="center">
                     {datum.date.month}/{datum.date.date}
                     <Text as="b" fontSize="12px" ml="2px">({t(`time.daysOfTheWeek.${datum.date.day}`)})</Text>
                   </Box>
@@ -88,7 +85,7 @@ const TableBlock = ({
                 <Td display={"flex"} flexDirection={"row"} bg="white" alignItems="center">
                   <Tooltip label={t(`Wx.${getWxName(datum.Wx.text)}`)}>
                     <Image 
-                      src={require(`assets/icons/Wx/wx_${isDayTime ? "day" : "night"}_${datum.Wx.index}.svg`)} 
+                      src={require(`assets/icons/Wx/wx_day_${datum.Wx.index}.svg`)} 
                       alt={t(`Wx.${getWxName(datum.Wx.text)}`) || "--"}
                       boxSize="40px"
                       objectFit={'contain'}
@@ -121,7 +118,7 @@ const TableBlock = ({
             data.map((datum) => (
               <Tr key={`${table}-${datum.date.day}`}>
                 <Td px={3}>
-                  <Box display="flex" flexDirection="row">
+                  <Box display="flex" flexDirection="row" justifyContent="center">
                     {datum.date.month}/{datum.date.date}
                     <Text as="b" fontSize="12px" ml="2px">({t(`time.daysOfTheWeek.${datum.date.day}`)})</Text>
                   </Box>
@@ -170,7 +167,7 @@ const TableBlock = ({
             data.map((datum) => (
               <Tr key={`${table}-${datum.date.day}`}>
                 <Td>
-                  <Box display="flex" flexDirection="row">
+                  <Box display="flex" flexDirection="row" justifyContent="center">
                     {datum.date.month}/{datum.date.date}
                     <Text as="b" fontSize="12px" ml="2px">({t(`time.daysOfTheWeek.${datum.date.day}`)})</Text>
                   </Box>
@@ -206,7 +203,7 @@ export default function WeekForecast({
 
   return (
     <>
-      <SelectButtons 
+      <ButtonsGroup 
         tabs={weekTabs}
         icons={weekTabsIcon}
         selectedType={selectedType}

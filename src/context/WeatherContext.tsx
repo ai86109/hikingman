@@ -20,9 +20,9 @@ const WeatherContext = createContext<WeatherContextProps>({
 })
 
 const WeatherContextProvider = ({ children }: WeatherContextProviderProps) => {
-  const { data: weekWeather, isLoading: weekWeatherIsLoading, isError: weekWeatherIsError } = useQuery<any>(['week'], getWeekWeather, {staleTime: 600000, cacheTime: 600000, refetchOnWindowFocus: false})
-  const { data: hourWeather, isLoading: hourWeatherIsLoading, isError: hourWeatherIsError } = useQuery<any>(['hour'], getHourWeather, {staleTime: 600000, cacheTime: 600000, refetchOnWindowFocus: false})
-  const { data: sunrise, isLoading: sunriseIsLoading, isError: sunriseIsError } = useQuery(['sunrise'], getSunrise, {staleTime: 600000, cacheTime: 600000, refetchOnWindowFocus: false})
+  const { data: weekWeather, isLoading: weekWeatherIsLoading, isError: weekWeatherIsError } = useQuery<any>(['week'], getWeekWeather, {staleTime: 5*(60*1000), cacheTime: 10*(60*1000), refetchOnWindowFocus: false})
+  const { data: hourWeather, isLoading: hourWeatherIsLoading, isError: hourWeatherIsError } = useQuery<any>(['hour'], getHourWeather, {staleTime: 5*(60*1000), cacheTime: 10*(60*1000), refetchOnWindowFocus: false})
+  const { data: sunrise, isLoading: sunriseIsLoading, isError: sunriseIsError } = useQuery(['sunrise'], getSunrise, {staleTime: 5*(60*1000), cacheTime: 10*(60*1000), refetchOnWindowFocus: false})
   // const { data: weekWeatherTW, isLoading: weekWeatherIsLoadingTW, isError: weekWeatherIsErrorTW } = useQuery<any>(['weekTW'], getWeekWeatherTW, {staleTime: 60000})
   // const { data: hourWeatherTW, isLoading: hourWeatherIsLoadingTW, isError: hourWeatherIsErrorTW } = useQuery<any>(['hourTW'], getHourWeatherTW, {staleTime: 60000})
   // if(!weekWeatherIsLoadingTW && !weekWeatherIsErrorTW) console.log("weekWeatherTW", weekWeatherTW)

@@ -1,5 +1,5 @@
 import { weatherDateInfoType, hourWeatherDataType, weekWeatherDataType, sunriseAndSunsetTime } from "types/WeatherDataType"
-import { getDateInfo, getTime } from "./getDate"
+import { getDateInfo, getTime, isSameDate, today } from "./getDate"
 
 export const getWxName = (wx: string) => {
   return wx.split(" ").map((word: any) => word.charAt(0).toUpperCase() + word.slice(1)).join("")
@@ -7,23 +7,39 @@ export const getWxName = (wx: string) => {
 
 export const getPoP6hrOfTheDay = (PoP6hr: any) => {
   let tempDate
-  const result: string[][] = []
+  let isFirstRow = true
+  const tempData: string[][] = []
   for(let data of PoP6hr) {
     const dateString = data.startTime
     const dateRaw = new Date(dateString)
     const date = dateRaw.toLocaleDateString("en-US", { month: "2-digit", day: "2-digit" }).replace(/\//g, "")
     const PoP = data.elementValue.value
-    
-    if(date === tempDate) result[result.length - 1].push(PoP)
+    if(date === tempDate) tempData[tempData.length - 1].push(PoP)
     else {
-      tempDate = date
-      result.push([PoP])
+      if(isFirstRow) {
+        if(isSameDate(today, dateString)) {
+          tempDate = date
+          tempData.push([PoP])
+          isFirstRow = false
+        } else if(new Date(today) < new Date(dateString)) {
+          const emptyArr = new Array(4).fill("--")
+          tempData.push(emptyArr)
+          isFirstRow = false
+        }
+      } else {
+        tempDate = date
+        tempData.push([PoP])
+      }
     }
   }
 
-  const missingDataCount = 4 - result[0].length
-  if(missingDataCount <= 0) return result
-  result[0] = Array(missingDataCount).fill("--").concat(result[0])
+  const result = tempData.map((datum) => {
+    const diff = 4 - datum.length
+    if(diff > 0) {
+      const prefix = new Array(diff).fill("--")
+      return [...prefix, ...datum]
+    } else return datum
+  })
   return result
 }
 

@@ -7,7 +7,7 @@ export default function Back() {
 
   return (
     <Flex bg="green" h="32px" justifyContent="flex-start" position="absolute" top="5px">
-      <ChevronLeftIcon w={30} h={30} ml={2} onClick={() => navigate('/hikingman/')} />
+      <ChevronLeftIcon w={30} h={30} ml={2} onClick={() => navigate('/')} cursor="pointer" />
     </Flex>
   )
 }
