@@ -25,11 +25,9 @@ export default function Lists({
   let targetIdx = 0
   if(list.length > 0) {
     for(let [key, value] of list[0].hourWeatherData[0].time.entries()) {
-      if(isSameDate(today, value.dataTime)) {
-        if(new Date(value.dataTime) > new Date(today)) {
-          targetIdx = key - 1
-          break
-        }
+      if(isSameDate(today, value.dataTime) && new Date(value.dataTime) > new Date(today)) {
+        targetIdx = key - 1
+        break
       }
     }
   }
