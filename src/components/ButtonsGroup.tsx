@@ -9,7 +9,7 @@ export default function ButtonsGroup({
   setSelectedType
 } : {
   tabs: { [x: string]: string[] },
-  icons: { [x: string]: string },
+  icons?: { [x: string]: string },
   selectedType: string,
   setSelectedType: Dispatch<SetStateAction<string>>
 }) {
@@ -33,11 +33,7 @@ export default function ButtonsGroup({
           opacity={tab === selectedType ? "1" : "0.5"}
           cursor="pointer"
         >
-          <Image 
-            src={icons[tab]}
-            w="40px"
-            mb={2}
-          />
+          {icons && <Image src={icons[tab]} w="40px" mb={2} />}
           {tabs[tab].map((item) => t(item)).join(' / ')}
         </Flex>
       ))}

@@ -1,50 +1,41 @@
-import { Image, TableContainer, Table, Thead, Tr, Th, Tbody, Td, Tooltip, Box, Text, Flex } from "@chakra-ui/react";
-import { useContext, useState } from "react";
+import { TableContainer, Table, Thead, Tr, Th, Tbody, Text, Flex, SystemCSSProperties } from "@chakra-ui/react";
+import { Fragment, useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getCIindex, getWeekWeatherDetail, getWxName } from "utils/getWeather";
-import { convertCelsiusToFahrenheit } from 'utils/unitCalculate'
-import { sunriseAndSunsetTime, weekWeatherDataType } from "types/WeatherDataType"
-import { TFunction } from "i18next";
+import { getBgColorByWindSpeed, getWeekForecastWeatherDetail } from "utils/getWeather";
+import { SunriseAndSunsetTimeType, WeatherElementType, WeekWeatherDataType, WeatherDateInfoType } from "types/WeatherDataType"
 import ButtonsGroup from "components/ButtonsGroup";
-import { weekTabs, weekTabsIcon, windDirection } from "data/constant";
+import { weekForecastWeatherTableHeaders, weekTabs, weekTabsIcon } from "data/constant";
 import { TemperatureContext } from "context/TemperatureContext";
 import NoData from "components/NoData";
+import TdContainer from "components/TdContainer";
+import { CIBlock, HumidityBlock, SunriseAndSunset, MultiTemperatureBlock, WeatherAndPoPBlock, WindBlock } from "components/WeatherTableBlock";
 
-const CIBlock = ({
-  maxIndex,
-  minIndex
-} : {
-  maxIndex: number,
-  minIndex: number
+const DateBlock = ({ 
+  dateInfo, style
+} : { 
+  dateInfo: WeatherDateInfoType,
+  style?: SystemCSSProperties
 }) => {
-  const max = getCIindex(maxIndex)
-  const min = getCIindex(minIndex)
-
+  const { t } = useTranslation()
+  const { month, date, day }: WeatherDateInfoType = dateInfo
   return (
-    <Flex alignItems="center" justifyContent="center">
-      {max !== min && 
-        <>
-          <Tooltip label={`${min}，${minIndex}`}>
-            <Image w="50px" src={require(`assets/icons/CI/${min}.svg`)} />
-          </Tooltip>
-          ～
-        </>}
-      <Tooltip label={`${max}，${maxIndex}`}>
-        <Image w="50px" src={require(`assets/icons/CI/${max}.svg`)} />
-      </Tooltip>
-    </Flex>
+    <TdContainer style={{...style}}>
+      <Flex flexDirection="row" justifyContent="center">
+        {month}/{date}
+        <Text as="b" fontSize="12px" ml="2px">({t(`time.daysOfTheWeek.${day}`)})</Text>
+      </Flex>
+    </TdContainer>
   )
 }
 
 const TableBlock = ({ 
-  data, 
-  t,
+  weekWeatherData, 
   table
 } : { 
-  data: weekWeatherDataType[],
-  t: TFunction,
+  weekWeatherData: WeekWeatherDataType[],
   table: string
 }) => {
+  const { t } = useTranslation()
   const { isCelsius } = useContext(TemperatureContext)
 
   return (
@@ -53,137 +44,52 @@ const TableBlock = ({
         <Thead>
           <Tr>
             <Th></Th>
-            {table === "table1" && (
-            <>
-              <Th textAlign={"center"}>{t('forecast.weatherAndPoP')}</Th>
-              <Th textAlign={"center"}>{t('forecast.temp')}({isCelsius ? "°C" : "°F"})</Th>
-            </>)}
-            {table === "table2" && (
-            <>
-              <Th textAlign={"center"} flexWrap="wrap">{t('forecast.bodyTemp')}({isCelsius ? "°C" : "°F"})</Th>
-              <Th textAlign={"center"}>{t('forecast.humidity')}</Th>
-              <Th textAlign={"center"}>{t('wind')}</Th>
-            </>)}
-            {table === "table3" && (
-            <>
-              <Th textAlign={"center"}>{t('forecast.comfortIndex')}</Th>
-              <Th textAlign={"center"}>{t('forecast.sunrise')}</Th>
-            </>)}
+            {weekForecastWeatherTableHeaders[table].map((header) => (
+              <Th textAlign={"center"} key={header.title}>
+                {t(header.title)}
+                {header.unit && <>({isCelsius ? "°C" : "°F"})</>}
+              </Th>
+            ))}
           </Tr>
         </Thead>
         <Tbody>
-          {table === "table1" &&
-          data.length > 0 && 
-            data.map((datum) => (
-              <Tr key={`${table}-${datum.date.day}`}>
-                <Td>
-                  <Box display="flex" flexDirection="row" justifyContent="center">
-                    {datum.date.month}/{datum.date.date}
-                    <Text as="b" fontSize="12px" ml="2px">({t(`time.daysOfTheWeek.${datum.date.day}`)})</Text>
-                  </Box>
-                </Td>
-                <Td display={"flex"} flexDirection={"row"} bg="white" alignItems="center">
-                  <Tooltip label={t(`Wx.${getWxName(datum.Wx.text)}`)}>
-                    <Image 
-                      src={require(`assets/icons/Wx/wx_day_${datum.Wx.index}.svg`)} 
-                      alt={t(`Wx.${getWxName(datum.Wx.text)}`) || "--"}
-                      boxSize="40px"
-                      objectFit={'contain'}
-                    />
-                  </Tooltip>
-                  <Text ml={2} as="b">{datum.PoP || "--"}%</Text>
-                </Td>
-                <Td bg="white">
-                  <Flex justifyContent="center">
-                    <Text color="#ed4350" as="b">
-                      {isCelsius 
-                        ? datum.maxTemp 
-                        : convertCelsiusToFahrenheit(Number(datum.maxTemp))
-                      }
-                    </Text>
-                    <Text mx={2}>/</Text>
-                    <Text color="#1477d0" as="b">
-                      {isCelsius 
-                        ? datum.minTemp 
-                        : convertCelsiusToFahrenheit(Number(datum.minTemp))
-                      }
-                    </Text>
-                  </Flex>
-                </Td>
-              </Tr>
-            ))
-          }
-          {table === "table2" &&
-          data.length > 0 && 
-            data.map((datum) => (
-              <Tr key={`${table}-${datum.date.day}`}>
-                <Td px={3}>
-                  <Box display="flex" flexDirection="row" justifyContent="center">
-                    {datum.date.month}/{datum.date.date}
-                    <Text as="b" fontSize="12px" ml="2px">({t(`time.daysOfTheWeek.${datum.date.day}`)})</Text>
-                  </Box>
-                </Td>
-                <Td textAlign="center" bg="white">
-                  <Flex justifyContent="center">
-                    <Text color="#ed4350" as="b">
-                      {isCelsius 
-                        ? datum.maxBodyTemp 
-                        : convertCelsiusToFahrenheit(Number(datum.maxBodyTemp))
-                      }
-                    </Text>
-                    <Text mx={2}>/</Text>
-                    <Text color="#1477d0" as="b">
-                      {isCelsius 
-                        ? datum.minBodyTemp 
-                        : convertCelsiusToFahrenheit(Number(datum.minBodyTemp))
-                      }
-                    </Text>
-                  </Flex>
-                </Td>
-                <Td textAlign="center" bg="white">{datum.humidity || "--"}%</Td>
-                <Td 
-                  textAlign="center" 
-                  bg={Number(datum.wind.speed) >= 8 
-                    ? "red" 
-                    : Number(datum.wind.speed) >= 6
-                      ? "yellow" 
-                      : "white"}
-                >
-                  <Flex direction="column" justifyContent="center" alignItems="center">
-                    <Image
-                      src={require('assets/icons/windDirection.png')}
-                      w="14px"
-                      mb={1}
-                      transform={`rotate(${windDirection[datum.wind.direction]}deg)`}
-                    />
-                    <Text as="b">{datum.wind.speed}</Text>
-                  </Flex>
-                </Td>
-              </Tr>
-            ))
-          }
-          {table === "table3" &&
-          data.length > 0 && 
-            data.map((datum) => (
-              <Tr key={`${table}-${datum.date.day}`}>
-                <Td>
-                  <Box display="flex" flexDirection="row" justifyContent="center">
-                    {datum.date.month}/{datum.date.date}
-                    <Text as="b" fontSize="12px" ml="2px">({t(`time.daysOfTheWeek.${datum.date.day}`)})</Text>
-                  </Box>
-                </Td>
-                <Td textAlign="center" bg="white" px={2}>
-                  <CIBlock maxIndex={Number(datum.maxComfortIdx)} minIndex={Number(datum.minComfortIdx)} />
-                </Td>
-                <Td textAlign="center" bg="white">
-                  {datum.sunriseAndSunset.sunRiseTime.length > 0
-                    ? <>{datum.sunriseAndSunset.sunRiseTime} / {datum.sunriseAndSunset.sunSetTime}</>
-                    : <>--</>
-                  }
-                </Td>
-              </Tr>
-            ))
-          }
+          {weekWeatherData.length > 0 && 
+            weekWeatherData.map((datum) => (
+            <Fragment key={`${table}-${datum.date.day}`}>
+              {table === "table1" && (
+                <Tr>
+                  <DateBlock dateInfo={datum.date} />
+                  <WeatherAndPoPBlock Wx={datum.Wx} PoP={datum.PoP} isDayTime={true} style={{ bg: "white" }} />
+                  <MultiTemperatureBlock maxTemp={datum.maxTemp} minTemp={datum.minTemp} isCelsius={isCelsius} style={{ bg: "white" }} />
+                </Tr>
+              )}
+              {table === "table2" && (
+                <Tr>
+                  <DateBlock dateInfo={datum.date} style={{ px: "12px" }} />
+                  <MultiTemperatureBlock maxTemp={datum.maxBodyTemp} minTemp={datum.minBodyTemp} isCelsius={isCelsius} style={{ bg: "white" }} />
+                  <HumidityBlock humidity={datum.humidity} style={{ bg: "white", textAlign: "center" }} />
+                  <WindBlock
+                    wind={datum.wind} 
+                    style={{
+                      textAlign: "center",
+                      bg: getBgColorByWindSpeed(Number(datum.wind.speed))
+                    }} 
+                  />
+                </Tr>
+              )}
+              {table === "table3" && (
+                <Tr>
+                  <DateBlock dateInfo={datum.date} />
+                  <CIBlock
+                    maxIndex={Number(datum.maxComfortIdx)} 
+                    minIndex={Number(datum.minComfortIdx)} 
+                    style={{ bg: "white", px: "8px" }} 
+                  />
+                  <SunriseAndSunset sunriseAndSunset={datum.sunriseAndSunset} style={{ bg: "white" }} />
+                </Tr>
+              )}
+            </Fragment>
+          ))}
         </Tbody>
       </Table>
     </TableContainer>
@@ -191,26 +97,25 @@ const TableBlock = ({
 }
 
 export default function WeekForecast({ 
-  weekWeatherData,
+  weekForecastWeatherData,
   sunriseAndSunsetList
 }: {
-  weekWeatherData: any[],
-  sunriseAndSunsetList: sunriseAndSunsetTime[]
+  weekForecastWeatherData: WeatherElementType[],
+  sunriseAndSunsetList: SunriseAndSunsetTimeType[]
 }) {
-  const { t } = useTranslation()
-  const [selectedType, setSelectedType] = useState('table1')
-  const data = getWeekWeatherDetail(weekWeatherData, sunriseAndSunsetList)
+  const [ selectedTable, setSelectedTable ] = useState<string>('table1')
+  const weekWeatherData = getWeekForecastWeatherDetail(weekForecastWeatherData, sunriseAndSunsetList)
 
   return (
     <>
       <ButtonsGroup 
         tabs={weekTabs}
         icons={weekTabsIcon}
-        selectedType={selectedType}
-        setSelectedType={setSelectedType} 
+        selectedType={selectedTable}
+        setSelectedType={setSelectedTable} 
       />
-      {data.length > 0 
-        ? <TableBlock data={data} t={t} table={selectedType} />
+      {weekWeatherData.length > 0 
+        ? <TableBlock weekWeatherData={weekWeatherData} table={selectedTable} />
         : <NoData />
       }
     </>

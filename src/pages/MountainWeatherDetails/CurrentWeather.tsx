@@ -2,13 +2,13 @@ import { Box, Flex, Grid, GridItem, Image, Text, Divider, Tooltip } from "@chakr
 import { TemperatureContext } from "context/TemperatureContext";
 import { useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { TFunction } from "i18next";
 import { getDateInfo, isSameDate, today } from "utils/getDate";
 import { getWxName, getPoP6hrOfTheDay } from "utils/getWeather";
 import { convertCelsiusToFahrenheit } from 'utils/unitCalculate'
+import { WeatherElementType } from "types/WeatherDataType";
 
-const getWeatherData = (relativeOfToday: number, weekWeatherData: any[]) => {
-  let [weatherText, weatherCode, maxTemp, minTemp] = ["--", "--", "--", "--"]
+const getWeatherDataByDate = (relativeOfToday: number, weekWeatherData: WeatherElementType[]): string[] => {
+  let [ weatherText, weatherCode, maxTemp, minTemp ] = ["--", "--", "--", "--"]
   let targetDate = new Date(today)
   targetDate.setDate(targetDate.getDate() + relativeOfToday)
 
@@ -27,21 +27,20 @@ const getWeatherData = (relativeOfToday: number, weekWeatherData: any[]) => {
     }
   }
 
-  return [weatherText, weatherCode, maxTemp, minTemp]
+  return [ weatherText, weatherCode, maxTemp, minTemp ]
 }
 
 const TempBlock = ({ 
-  isCelsius,
   isMax,
   temp,
-  t
 } : {
-  isCelsius: boolean,
   isMax: boolean,
-  temp: number,
-  t: TFunction
+  temp: string,
 }) => {
+  const { isCelsius } = useContext(TemperatureContext)
+  const { t } = useTranslation()
   const mainBg = isMax ? "#ed4350" : "#1477d0"
+  const isNoData = temp === '--'
 
   return (
     <Box bg={mainBg} w={110} borderRadius={10} textAlign="center" borderWidth={2} borderColor={mainBg}>
@@ -50,9 +49,9 @@ const TempBlock = ({
       </Text>
       <Box bg="white" color={mainBg} borderBottomRadius={8}>
         <Text as="b">
-          {isCelsius 
+          {(isCelsius || isNoData)
             ? temp 
-            : convertCelsiusToFahrenheit(temp)
+            : convertCelsiusToFahrenheit(Number(temp))
           }
           {isCelsius ? "°C" : "°F"}
         </Text>
@@ -63,16 +62,15 @@ const TempBlock = ({
 
 const WeatherOverview = ({ 
   relativeOfToday, 
-  weekWeatherData,
+  weekForecastWeatherData,
   PoP
 } : { 
   relativeOfToday: number,
-  weekWeatherData: any[],
+  weekForecastWeatherData: WeatherElementType[],
   PoP: string[][]
 }) => {
-  const { isCelsius } = useContext(TemperatureContext)
   const { t } = useTranslation()
-  const [weatherText, weatherCode, maxTemp, minTemp] = getWeatherData(relativeOfToday, weekWeatherData)
+  const [ weatherText, weatherCode, maxTemp, minTemp ] = getWeatherDataByDate(relativeOfToday, weekForecastWeatherData)
   let targetDate = new Date(today)
   targetDate.setDate(targetDate.getDate() + relativeOfToday)
   const { month, date, day } = getDateInfo(targetDate.toDateString())
@@ -86,7 +84,7 @@ const WeatherOverview = ({
           ({t(`time.daysOfTheWeek.${day}`)})
         </Text>
         <Flex direction={{ base: "column" }} alignItems={{ base: "center" }} mt={4}>
-          {weatherText !== '--' && (
+          {weatherText !== '--' ? (
           <>
             <Tooltip label=
             {t(`Wx.${getWxName(weatherText)}`)}>
@@ -100,13 +98,13 @@ const WeatherOverview = ({
             <Text fontSize="sm" as="b" textAlign={'center'}>
               {t(`Wx.${getWxName(weatherText)}`)}
             </Text>
-          </>)}
+          </>) : (<Text fontSize="sm" as="b" textAlign={'center'} mt={8}>--</Text>)}
         </Flex>
       </Flex>
       <Box w="250px">
         <Flex direction={{ base: "row" }} justify={{ base: "space-between" }} mb={2}>
-          <TempBlock isCelsius={isCelsius} isMax={true} temp={Number(maxTemp)} t={t} />
-          <TempBlock isCelsius={isCelsius} isMax={false} temp={Number(minTemp)} t={t} />
+          <TempBlock isMax={true} temp={maxTemp} />
+          <TempBlock isMax={false} temp={minTemp} />
         </Flex>
         <Grid 
           templateColumns="repeat(5, 1fr)"
@@ -124,10 +122,11 @@ const WeatherOverview = ({
           <GridItem w="100%" h="10" bg="gray.100" lineHeight="3em">
             {t('currentWeather.time')}
           </GridItem>
-          <GridItem w="100%" h="10" bg="gray.100" lineHeight="3em">0-6</GridItem>
-          <GridItem w="100%" h="10" bg="gray.100" lineHeight="3em">6-12</GridItem>
-          <GridItem w="100%" h="10" bg="gray.100" lineHeight="3em">12-18</GridItem>
-          <GridItem w="100%" h="10" bg="gray.100" lineHeight="3em">18-24</GridItem>
+          {["0-6", "6-12", "12-18", "18-24"].map((timeRange: string) => (
+            <GridItem w="100%" h="10" bg="gray.100" lineHeight="3em" key={`${relativeOfToday}${timeRange}`}>
+              {timeRange}
+            </GridItem>
+          ))}
           <GridItem w="100%" h="10" bg="gray.100" lineHeight="3em">
             {t('currentWeather.PoP')}
           </GridItem>
@@ -143,19 +142,19 @@ const WeatherOverview = ({
 }
 
 export default function CurrentWeather({ 
-  weekWeatherData,
-  hourWeatherData
+  weekForecastWeatherData,
+  hourForecastWeatherData
 }: {
-  weekWeatherData: any[],
-  hourWeatherData: any[]
+  weekForecastWeatherData: WeatherElementType[],
+  hourForecastWeatherData: WeatherElementType[]
 }) {
-  const PoP6hr = getPoP6hrOfTheDay(hourWeatherData[3].time)
+  const PoP6hr = getPoP6hrOfTheDay(hourForecastWeatherData[3].time)
 
   return (
     <Box bg="white" borderRadius={10} pr={3} py={8} mt={4}>
-      <WeatherOverview relativeOfToday={0} weekWeatherData={weekWeatherData} PoP={PoP6hr} />
+      <WeatherOverview relativeOfToday={0} weekForecastWeatherData={weekForecastWeatherData} PoP={PoP6hr} />
       <Divider orientation='horizontal' m={[5, 0]} w="unset" />
-      <WeatherOverview relativeOfToday={1} weekWeatherData={weekWeatherData} PoP={PoP6hr} />
+      <WeatherOverview relativeOfToday={1} weekForecastWeatherData={weekForecastWeatherData} PoP={PoP6hr} />
     </Box>
   )
 }

@@ -1,17 +1,17 @@
 import { Box, TabList, Tabs, Tab, TabPanels, TabPanel } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { sunriseAndSunsetTime } from "types/WeatherDataType";
+import { SunriseAndSunsetTimeType, WeatherElementType } from "types/WeatherDataType";
 import HoursForecast from "./HoursForecast";
 import WeekForecast from "./WeekForecast";
 
 export default function WeatherForecast({ 
-  weekWeatherData,
-  hourWeatherData,
+  weekForecastWeatherData,
+  hourForecastWeatherData,
   sunriseAndSunsetList
 }: {
-  weekWeatherData: any[],
-  hourWeatherData: any[],
-  sunriseAndSunsetList: sunriseAndSunsetTime[]
+  weekForecastWeatherData: WeatherElementType[],
+  hourForecastWeatherData: WeatherElementType[],
+  sunriseAndSunsetList: SunriseAndSunsetTimeType[]
 }) {
   const { t } = useTranslation()
 
@@ -24,10 +24,10 @@ export default function WeatherForecast({
         </TabList>
         <TabPanels bg="white">
           <TabPanel px="unset">
-            <WeekForecast weekWeatherData={weekWeatherData} sunriseAndSunsetList={sunriseAndSunsetList} />
+            <WeekForecast weekForecastWeatherData={weekForecastWeatherData} sunriseAndSunsetList={sunriseAndSunsetList} />
           </TabPanel>
           <TabPanel>
-            <HoursForecast hourWeatherData={hourWeatherData} />
+            <HoursForecast hourForecastWeatherData={hourForecastWeatherData} />
           </TabPanel>
         </TabPanels>
       </Tabs>

@@ -8,9 +8,11 @@ import mtInfo from 'data/mtInfo.json'
 import { useTranslation } from "react-i18next";
 import i18n from "i18n"
 import { convertMeterToFeet } from "utils/unitCalculate";
-import { useNavigate, Link } from "react-router-dom";
-import { Fragment, useState } from "react";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 import { badgeColor } from "data/constant";
+import NoData from "components/NoData";
+import { MtInfoType } from "types/MtInfoType";
 
 interface categoryGroupType {
   [key: string]: any
@@ -50,13 +52,13 @@ interface categoryGroupType {
 //                     <Heading size='md'>
 //                       {isHeight
 //                         ? (<Flex justifyContent="space-between">
-//                             <Text>{t(`locationName.${(mtInfo as any)[datum[0]]?.locationName}`)}</Text>
+//                             <Text>{t(`locationName.${mountainInfo[datum[0]]?.locationName}`)}</Text>
 //                             <Text>
 //                               {i18n.language === 'en' ? convertMeterToFeet(datum[1]) : datum[1]}
 //                               {i18n.language === 'en' ? ' ft' : ' m'}
 //                             </Text>
 //                           </Flex>)
-//                         : <Box>{t(`locationName.${(mtInfo as any)[datum]?.locationName}`)}</Box>
+//                         : <Box>{t(`locationName.${mountainInfo[datum]?.locationName}`)}</Box>
 //                       }
 //                     </Heading>
 //                   </CardHeader>
@@ -75,68 +77,68 @@ const SearchList = ({
   categoryList: string[]
 }) => {
   const { t } = useTranslation()
+  const mountainInfo: {[key: string]: MtInfoType} = mtInfo
 
   return (
     <Box p={2}>
-      {categoryList.length > 0 && 
-        categoryList.map((mountainId) => (
-          <Link to={mountainId}>
-            <Card 
-              key={mountainId}
-              direction={{ base: 'column' }}
-              overflow='hidden'
+      {categoryList.map((mountainId) => (
+        <Link to={mountainId}>
+          <Card 
+            direction={{ base: 'column' }}
+            overflow='hidden'
+            key={mountainId}
+          >
+            <Flex
+              direction={{ base: 'row' }}
+              alignItems={{ base: 'center' }}
+              justifyContent={{ base: 'space-between' }}
             >
-              <Flex
-                direction={{ base: 'row' }}
-                alignItems={{ base: 'center' }}
-                justifyContent={{ base: 'space-between' }}
-              >
-                <Heading size='md' pl={4} w={{ base: '250px' }}>
-                  {t(`locationName.${(mtInfo as any)[mountainId].locationName}`)}
-                  <Badge colorScheme="gray" ml={2}>
-                    {(mtInfo as any)[mountainId].difficulty && 
-                    `${(mtInfo as any)[mountainId].difficulty}`}
-                  </Badge>
-                </Heading>
-                <Stack direction={{ base: 'row' }} alignItems={{ base: 'center' }}>
-                  <CardBody>
-                    <Stat flex="unset" fontSize={'18px'}>
-                      <StatArrow type="increase" />
-                      {i18n.language === 'en' 
-                        ? convertMeterToFeet((mtInfo as any)[mountainId].height) 
-                        : (mtInfo as any)[mountainId].height
-                      }
-                      {i18n.language === 'en' ? ' ft' : ' m'}
-                    </Stat>
-                  </CardBody>
-                </Stack>
-              </Flex>
-              <Flex pl={4} pb={4}>
-                {Object.entries((mtInfo as any)[mountainId]).map(([key, value]: [string, any]) => {
-                  const isArray = Array.isArray(value)
-                  const isEmpty = value.length === 0
-                  if(isEmpty) return <></>
+              <Heading size='md' pl={4} w={{ base: '250px' }}>
+                {t(`locationName.${mountainInfo[mountainId].locationName}`)}
+                <Badge colorScheme="gray" ml={2}>
+                  {mountainInfo[mountainId].difficulty && 
+                  `${mountainInfo[mountainId].difficulty}`}
+                </Badge>
+              </Heading>
+              <Stack direction={{ base: 'row' }} alignItems={{ base: 'center' }}>
+                <CardBody>
+                  <Stat flex="unset" fontSize={'18px'}>
+                    <StatArrow type="increase" />
+                    {i18n.language === 'en' 
+                      ? convertMeterToFeet(mountainInfo[mountainId].height) 
+                      : mountainInfo[mountainId].height
+                    }
+                    {i18n.language === 'en' ? ' ft' : ' m'}
+                  </Stat>
+                </CardBody>
+              </Stack>
+            </Flex>
+            <Flex pl={4} pb={4}>
+              {Object.entries(mountainInfo[mountainId]).map(([key, value]: [string, string | number | string[]]) => {
+                const isArray = Array.isArray(value)
+                const isEmpty = typeof value === 'number' || value.length === 0
+                if(isEmpty) return <></>
 
-                  return (
-                    <Flex key={key} flexWrap="wrap">
-                      {!['locationName', 'height', 'difficulty', 'county'].includes(key) &&
-                        <>
-                          {isArray 
-                            ? value.map((value) => (
-                                <Badge key={value} mr={2} colorScheme={badgeColor[value]}>{t(`mtTag.${value}`)}</Badge>
-                              ))
-                            : <Badge mr={2} colorScheme="cyan">
-                                {value && key === 'park' && `${t(`mtTag.${value}`)} ${t(`mtTag.mtPark`)}`}
-                              </Badge>
-                          }
-                        </>
-                      }
-                    </Flex>
-                  )
-                })}
-              </Flex>
-            </Card>
-          </Link>
+                return (
+                  <>
+                    {!['locationName', 'height', 'difficulty', 'county'].includes(key) &&
+                      <>
+                        {isArray 
+                          ? value.map((value) => (
+                              <Badge key={value} mr={2} colorScheme={badgeColor[value]}>{t(`mtTag.${value}`)}</Badge>
+                            ))
+                          : <Badge mr={2} colorScheme="cyan">
+                              {value && key === 'park' && `${t(`mtTag.${value}`)} ${t(`mtTag.mtPark`)}`}
+                            </Badge>
+                        }
+                      </>
+                    }
+                  </>
+                )
+              })}
+            </Flex>
+          </Card>
+        </Link>
       ))}
     </Box>
   )
@@ -145,40 +147,46 @@ const SearchList = ({
 export default function Category() {
   const { t } = useTranslation()
   const categoryGroup: categoryGroupType = { mtCate, mtCounty, mtDifficulty, mtPark, mtHeight }
-  const [selected, setSelected] = useState(() => {
-    return Object.keys(categoryGroup).reduce((acc, key) => {
-      (acc as {[key: string]: string})[key] = ''
+  const [selected, setSelected] = useState<{[key: string]: string}>(() => {
+    return Object.keys(categoryGroup).reduce((acc: {[key: string]: string}, key: string) => {
+      acc[key] = ''
       return acc
     }, {})
   })
-  const [categoryList, setCategoryList] = useState([] as string[])
+  const [categoryList, setCategoryList] = useState<string[]>([])
 
   const handleChange = ((title: string, list: string) => {
-    const target: string = (selected as categoryGroupType)[title]
+    const target: string = selected[title]
     setSelected(currentValues => ({
       ...currentValues, 
       [title]: target === list ? '' : list
     }))
   })
 
-  const handleClick = () => {
-    let res: string[] = []
-    let isFirst = true
-    Object.keys(selected).forEach((title) => {
-      const items = categoryGroup[title][(selected as categoryGroupType)[title]] || []
-      if(items.length !== 0) {
-        if(isFirst) {
-          items.map((item: string) => res.push(item))
-          isFirst = false
+  const handleSearchClick = () => {
+    let isFirstSearch = true
+    const list = getSearchedList()
+
+    function getSearchedList() {
+      let res: string[] = []
+      Object.keys(selected).forEach((title) => {
+        const items: string[] = categoryGroup[title][selected[title]] || []
+        if(items.length !== 0) {
+          if(isFirstSearch) {
+            items.map((item: string) => res.push(item))
+            isFirstSearch = false
+          }
+          else res = res.filter((value) => items.includes(value))
         }
-        else res = res.filter((value) => items.includes(value))
-      }
-    })
-    setCategoryList(res)
+      })
+      return res
+    }
+    
+    setCategoryList(list)
   }
 
   return (
-    <Box>
+    <Box pb={12}>
       <Box 
         bgImage={`https://www.yamarepo.com/image/yama/t-yama.png`} 
         bgRepeat="no-repeat" 
@@ -186,26 +194,26 @@ export default function Category() {
         borderBottom="2px solid #003956"
       ></Box>
       <Box p={2}>
-        {Object.keys(categoryGroup).map((title) => (
-          <Accordion allowMultiple key={title}>
+        {Object.keys(categoryGroup).map((categoryTitle) => (
+          <Accordion allowMultiple key={categoryTitle}>
             <AccordionItem>
             <AccordionButton>
               <Box as="span" flex='1' textAlign='left'>
-                <Text as="b" color="#7F5E44" fontSize={16}>{t(`mtTag.${title}`)}</Text>
+                <Text as="b" color="#7F5E44" fontSize={16}>{t(`mtTag.${categoryTitle}`)}</Text>
               </Box>
               <AccordionIcon />
             </AccordionButton>
             <AccordionPanel>
-              {Object.keys(categoryGroup[title]).map((list) => (
+              {Object.keys(categoryGroup[categoryTitle]).map((option) => (
                 <Checkbox 
-                  key={list}
-                  value={list} 
-                  isChecked={(selected as categoryGroupType)[title] === list}
-                  onChange={() => handleChange(title, list)}
+                  key={option}
+                  value={option} 
+                  isChecked={selected[categoryTitle] === option}
+                  onChange={() => handleChange(categoryTitle, option)}
                   mr={4}
                   size="lg"
                 >
-                  {t(`mtTag.${list}`)}
+                  {t(`mtTag.${option}`)}
                 </Checkbox>
               ))}
             </AccordionPanel>
@@ -214,9 +222,12 @@ export default function Category() {
         ))}
       </Box>
       <Box p={2}>
-        <Button colorScheme="teal" onClick={handleClick} w="100%">Search</Button>
+        <Button colorScheme="teal" onClick={handleSearchClick} w="100%">{t('search')}</Button>
       </Box>
-      <SearchList categoryList={categoryList} />
+      {categoryList.length > 0 
+        ? <SearchList categoryList={categoryList} />
+        : <NoData />
+      }
       {/* <AccordionBlock data={categoryGroup} /> */}
     </Box>
   )

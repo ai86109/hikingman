@@ -5,7 +5,7 @@ interface TemperatureContextType {
   toggleTemperature: () => void,
 }
 
-interface TemperatureContextProviderProps {
+interface TemperatureContextProviderPropsType {
   children: ReactNode
 }
 
@@ -14,7 +14,7 @@ const TemperatureContext = createContext<TemperatureContextType>({
   toggleTemperature: () => {}
 })
 
-const TemperatureContextProvider = ({children}: TemperatureContextProviderProps) => {
+const TemperatureContextProvider = ({children}: TemperatureContextProviderPropsType) => {
   const [isCelsius, setIsCelsius] = useState<boolean>(true)
   const toggleTemperature = () => setIsCelsius(!isCelsius)
 
