@@ -17,7 +17,7 @@ interface windDirectionType {
 export const weekTabs: subTabsType = {
   "table1": ["weather", "temp", "probabilityOfPrecipitation"],
   "table2": ["bodyTemp", "humidity", "wind"],
-  "table3": ["comfortIndex", "sunrise"]
+  "table3": ["comfortIndex", "sunriseAndSunset"]
 }
 
 export const hourTabs: subTabsType = {
@@ -106,4 +106,48 @@ export const windDirection: windDirectionType = {
   "NE": 225,
   "E": 270,
   "SE": 315
+}
+
+interface forecastWeatherTableHeadersType {
+  [key: string]: {
+    title: string,
+    unit?: boolean
+  }[]
+}
+
+type weekForecastWeatherTableHeadersType = forecastWeatherTableHeadersType
+type hourForecastWeatherTableHeadersType = forecastWeatherTableHeadersType
+
+export const weekForecastWeatherTableHeaders: weekForecastWeatherTableHeadersType = {
+  "table1": [
+    { title: 'forecast.weatherAndPoP' },
+    { title: 'forecast.temp', unit: true },
+  ],
+  "table2": [
+    { title: 'forecast.bodyTemp', unit: true },
+    { title: 'forecast.humidity' },
+    { title: 'wind' },
+  ],
+  "table3": [
+    { title: 'forecast.comfortIndex'},
+    { title: 'forecast.sunriseAndSunset'},
+  ],
+}
+
+export const hourForecastWeatherTableHeaders: hourForecastWeatherTableHeadersType = {
+  "table1": [
+    { title: 'forecast.time' },
+    { title: 'forecast.weatherAndPoP' },
+    { title: 'forecast.temp', unit: true },
+  ],
+  "table2": [
+    { title: 'forecast.time' },
+    { title: 'forecast.humidity' },
+    { title: 'wind' },
+  ],
+  "table3": [
+    { title: 'forecast.time' },
+    { title: 'forecast.bodyTemp', unit: true },
+    { title: 'forecast.comfortIndex'},
+  ],
 }

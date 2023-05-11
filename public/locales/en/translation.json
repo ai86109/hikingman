@@ -6,7 +6,8 @@
   "humidity": "Humidity",
   "wind": "Wind",
   "comfortIndex": "Comfort Index",
-  "sunrise": "Sunrise & Sunset",
+  "sunriseAndSunset": "Sunrise & Sunset",
+  "search": "Search",
   "searchByName": "Search By Name",
   "searchByCate": "Search By Category",
   "search.placeholder": "Enter the mountain",
@@ -23,7 +24,7 @@
   "forecast.bodyTemp": "AT",
   "forecast.humidity": "RH",
   "forecast.comfortIndex": "CI",
-  "forecast.sunrise": "SR / SS",
+  "forecast.sunriseAndSunset": "SR / SS",
   "forecast.time": "Time",
   "time.today": "Today",
   "time.tomorrow": "Tomorrow",
@@ -479,5 +480,11 @@
   "mtTag.over3000": "Over 9842ft",
   "mtTag.over2000": "Over 6561ft",
   "mtTag.over1000": "Over 3280ft",
-  "mtTag.under1000": "Under 3280ft"
+  "mtTag.under1000": "Under 3280ft",
+  "CItext.veryCold": "Very Cold",
+  "CItext.cold": "Cold",
+  "CItext.slightCold": "Slight Cold",
+  "CItext.cozy": "Cozy",
+  "CItext.hot": "Hot",
+  "CItext.veryHot": "Very Hot"
 }
