@@ -12,6 +12,7 @@ import { getCurrentHour, isSameDate, today } from 'utils/getDate'
 import NoData from 'components/NoData'
 
 const getTargetIndex = (list: WeatherDataType[]) => {
+  const defaultIndex = 0
   if(list.length > 0) {
     const timeList = list[0].hourForecastWeatherData[0].time
     for(let i = 0; i < timeList.length; i++) {
@@ -19,7 +20,7 @@ const getTargetIndex = (list: WeatherDataType[]) => {
       if(isGreaterThanCurrentTime) return i - 1
     }
   }
-  return 0
+  return defaultIndex
 }
 
 export default function Lists({ 
