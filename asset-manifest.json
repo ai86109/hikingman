@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.js": "/hikingman/static/js/main.51ab2d5b.js",
+    "main.js": "/hikingman/static/js/main.0cbaf44f.js",
     "static/js/787.3e252116.chunk.js": "/hikingman/static/js/787.3e252116.chunk.js",
     "static/media/windDirection.png": "/hikingman/static/media/windDirection.033b44132991f2717a79.png",
     "static/media/wx_day_37.svg": "/hikingman/static/media/wx_day_37.53854d4ad96ae61ff070.svg",
@@ -93,10 +93,10 @@
     "static/media/wx_night_01.svg": "/hikingman/static/media/wx_night_01.0dc7c1c1e65fcad29281.svg",
     "index.html": "/hikingman/index.html",
     "static/media/getFetch.cjs": "/hikingman/static/media/getFetch.40f37ddea2378391108f.cjs",
-    "main.51ab2d5b.js.map": "/hikingman/static/js/main.51ab2d5b.js.map",
+    "main.0cbaf44f.js.map": "/hikingman/static/js/main.0cbaf44f.js.map",
     "787.3e252116.chunk.js.map": "/hikingman/static/js/787.3e252116.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.51ab2d5b.js"
+    "static/js/main.0cbaf44f.js"
   ]
 }
