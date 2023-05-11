@@ -6,7 +6,8 @@
   "humidity": "濕度",
   "wind": "風",
   "comfortIndex": "舒適度",
-  "sunrise": "日出日落",
+  "sunriseAndSunset": "日出日落",
+  "search": "查詢",
   "searchByName": "以山名搜尋",
   "searchByCate": "以分類搜尋",
   "search.placeholder": "輸入想查詢的山",
@@ -23,7 +24,7 @@
   "forecast.bodyTemp": "體感溫度",
   "forecast.humidity": "濕度",
   "forecast.comfortIndex": "舒適度",
-  "forecast.sunrise": "日出日落",
+  "forecast.sunriseAndSunset": "日出日落",
   "forecast.time": "時間",
   "time.today": "今日",
   "time.tomorrow": "明日",
@@ -479,5 +480,11 @@
   "mtTag.over3000": "3000公尺以上",
   "mtTag.over2000": "2000公尺以上",
   "mtTag.over1000": "1000公尺以上",
-  "mtTag.under1000": "1000公尺以下"
+  "mtTag.under1000": "1000公尺以下",
+  "CItext.veryCold": "非常寒冷",
+  "CItext.cold": "寒冷",
+  "CItext.slightCold": "稍有寒意",
+  "CItext.cozy": "舒適",
+  "CItext.hot": "悶熱",
+  "CItext.veryHot": "非常悶熱（容易中暑）"
 }

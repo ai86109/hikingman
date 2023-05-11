@@ -6,22 +6,37 @@ export interface BasicInfoType {
   id: string
 }
 
-export interface WeatherDataType { 
-  basicInfo: BasicInfoType, 
-  weekWeatherData: any[], 
-  hourWeatherData: any[] 
+export interface WeatherElementType {
+  description: string,
+  elementName: string,
+  time: any[]
 }
 
-export type WeatherMapType = Map<string, WeatherDataType>
+export interface WeatherDataType { 
+  basicInfo: BasicInfoType, 
+  weekForecastWeatherData: WeatherElementType[], 
+  hourForecastWeatherData: WeatherElementType[] 
+}
 
-export interface weatherDateInfoType {
+export type ForecastWeatherType = Map<string, WeatherDataType>
+
+export interface PoP6hrType {
+  startTime: string,
+  endTime: string,
+  elementValue: {
+    measures: string,
+    value: string
+  }
+}
+
+export interface WeatherDateInfoType {
   month: number,
   date: number,
   day: number
 }
 
-export interface weekWeatherDataType {
-  date: weatherDateInfoType,
+export interface WeekWeatherDataType {
+  date: WeatherDateInfoType,
   Wx: {
     text: string,
     index: string
@@ -44,7 +59,7 @@ export interface weekWeatherDataType {
   }
 }
 
-export interface hourWeatherDataType {
+export interface HourWeatherDataType {
   time: number,
   Wx: {
     text: string,
@@ -61,22 +76,58 @@ export interface hourWeatherDataType {
   comfortIdx: string
 }
 
-export interface hourWeatherListType {
-  date: weatherDateInfoType,
-  weatherData: hourWeatherDataType[]
+export interface HourWeatherListType {
+  date: WeatherDateInfoType,
+  weatherData: HourWeatherDataType[]
 }
 
-export interface sunriseAndSunsetTime {
+export interface SunriseAndSunsetTimeType {
   Date: string, 
   SunRiseTime: string, 
   SunSetTime: string 
 }
 
-export interface sunriseListType {
+export interface SunriseAndSunsetListType {
   CountyName: string, 
-  time: sunriseAndSunsetTime[]
+  time: SunriseAndSunsetTimeType[]
 }
 
-export interface sunriseAndSunsetType {
-  [key: string]: sunriseAndSunsetTime[]
+export interface SunriseAndSunsetType {
+  [key: string]: SunriseAndSunsetTimeType[]
+}
+
+export interface SunriseAndSunSetResponseType {
+  data: {
+    records: {
+      locations: {
+        location: SunriseAndSunsetListType[]
+      }
+    }
+  }  
+}
+
+export interface ForecastWeatherListType {
+  geocode: string,
+  lat: string,
+  locationName: string
+  lon: string,
+  parameterSet: {
+    parameter: {
+      parameterName: string,
+      parameterValue: string
+    }
+  },
+  weatherElement: WeatherElementType[]
+}
+
+export interface ForecastWeatherResponseType {
+  data: {
+    cwbopendata: {
+      dataset: {
+        locations: {
+          location: ForecastWeatherListType[]
+        }
+      }
+    }
+  }
 }
